@@ -1,4 +1,96 @@
 <!DOCTYPE html>
+<!--
+ +MMMMMMMMI mmmmmmmmmm +M         +MMMMMMMMI .%MMMMMMM%. MM    MM .%MMMMMMM%.             +MMMMMM%+   .%MMMMMMM%. .%MMMMMMM%. 
+ MMMMMMMMMI MMMMMMMMMM MM         MMMMMMMMMI %MM%' '%MM% MM.  .MM %MM%' '%MM%             MMMMMMMMMI  %MM%' '%MM% %MM%' '%MM% 
+ MM+            MM     MM         MM+        MM'         'MM  MM' MM'                     MM+    +MM; MM'     'MM MM'         
+ MM........     MM     MM         MM........ MM%.......   MM..MM  MM%.......              MM      MM: MM       MM MM%.......  
+ MMMMMMMMMM     MM     MM         MMMMMMMMMM  %MMMMMMM%.  'MMMM'   %MMMMMMM%.             MM      MM: MM       MM  %MMMMMMM%. 
+ MM''''''''     MM     MM         MM''''''''   ''''''%MM   'MM'     ''''''%MM             MM      MM: MM       MM   ''''''%MM 
+ MM             MM     MM         MM+                .MM    MM            .MM             MM+    +MM; MM.     .MM         .MM 
+ MM         mmmmMMmmmm MM........ MMMMMMMMMI %MM%. .%MM%    MM    %MM%. .%MM%             MMMMMMMMMI  %MM%. .%MM% %MM%. .%MM% 
+ MM         MMMMMMMMMM +MMMMMMMM% +MMMMMMMMI '%MMMMMMM%'    MM    '%MMMMMMM%'             +MMMMMM%+   '%MMMMMMM%' '%MMMMMMM%' 
+
+FILESYS DOS project started on 3-31-22 at ~2:00PM.
+
+Inspired by SUPERHOT's game menu.
+(i love it)
+
+Notes:
+
+I want this to be completely procedural, as in i want it to basically read information off of a JSON object file, and it displays stuff fromthat
+
+also:
+
+▓▒░
+▗▖▝▘▟▙▜▛▚▞█
+▉▊▋▌▍▎▏
+▇▆▅▄▃▂▁
+
+│┴┬├─┤┼┌┐└┘
+┃┻┳┣━┫╋┏┓┗┛
+║╩╦╠═╣╬╔╗╚╝
+
+CHARACTER SCREEN SIZE:
+64x24
+(WIDTH x HEIGHT)
+
+DEFAULT SELECTION SCREEN:
+
+┌────────────┬────────┬───────────────────────────14:17──┐
+│superhot.exe│--FILE->│ directory:APPS         |>FOLDER< │
+│readme.txt  │--FILE->│                                  │
+│replays.exe │--FILE->│                                  │
+│quit.exe    │--FILE->│                                  │
+│------------│--------│                                  │
+│SETTINGS    │>FOLDER<│                                  │
+│APPS        │>FOLDER<│                                  │
+│DEMOS       │>FOLDER<│                                  │
+│CELLULAR    │>FOLDER<│                                  │
+│WIRES       │>FOLDER<│                                  │
+│GAMES       │>FOLDER<│                                  │
+│VR          │>FOLDER<│                                  │
+│ART         │>FOLDER<│                                  │
+│VIDEOS      │>FOLDER<│                                  │
+│            │        │                                  │
+│            │        │                                  │
+│            │        │                                  │
+│            │        │                                  │
+│            │        │                                  │
+│            │        │                                  │
+├────────────┼────────┼──────────────────────────────────┤
+│C:\         │        │                                  │
+└────────────┴────────┴──────────────Omni-piOS-v2.1.01p──┘
+
+DEFAULT FULL APPLICATION SCREEN:
+
+┌──────sinus─2─app─by─3.14─────────────────────────────────────┐
+│                                                              │
+│                                                              │
+│                                                              │
+│                                                              │
+│                                                              │
+│                                                              │
+│                                                              │
+│                                                              │
+│                                                              │
+│                                                              │
+│                                                              │
+│                                                              │
+│                                                              │
+│                                                              │
+│                                                              │
+│                                                              │
+│                                                              │     
+│                                                              │
+│                                                              │
+│                                                              │
+└───────────────────────────────────────────press─ESC─to─quit──┘
+
+
+
+-->
+
+
 <html lang="">
   <head>
     <meta charset="utf-8">
@@ -6,11 +98,22 @@
     <link rel="stylesheet" href="main.css">
   </head>
   <body>
+    <style id="DOS_resize"></style> 
 
 
 
+    
+      <div class="display DOS" id="DOS">
+        <pre class="DOS_part" id="DOS_text"></pre>
+        <!--<span class="DOS_part" id="DOS_cursor"></span>-->
+      </div>
+    
+    
     <script src="ui.js"></script>
     <script src="init.js"></script>
+    <script src="pageResize.js"></script>
     <script src="run.js"></script>
+
   </body>
 </html>
+

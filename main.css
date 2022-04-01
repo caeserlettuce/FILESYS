@@ -1,1 +1,59 @@
- 
+@font-face {
+    font-family: FIXEDSYS;
+    src: url(assets/FIXEDSYS.ttf);
+}
+
+@font-face {
+    font-family: DOSVGA;
+    src: url(assets/DOSVGA_437.ttf);
+}
+
+@font-face {
+    font-family: DOSVGA_WIN;
+    src: url(assets/DOSVGA_437_WIN.ttf);
+}
+
+body {
+    font-family: DOSVGA_WIN;
+    background-color: #111111;
+    color: white;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding: 0px;
+    border: 0px;
+    margin: 0px;
+}
+
+pre {
+    font-family: DOSVGA_WIN;
+    padding: 0px;
+    border: 0px;
+    margin: 0px;
+}
+
+p {
+    font-family: DOSVGA_WIN;
+    padding: 0px;
+    border: 0px;
+    margin: 0px;  
+}
+
+.DOS_part {
+    position: absolute;
+    width: fit-content;
+    text-align: left;
+}
+
+.centered{
+    position: absolute;
+    top: 37.5%;
+    left: 37.5%;
+    margin-top: -37.5px;
+    margin-left: -37.5px;
+    width: 100px;
+    height: 100px;
+}
+
+.DOS {
+    text-align: center;
+}
