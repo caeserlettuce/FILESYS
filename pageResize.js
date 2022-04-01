@@ -36,31 +36,30 @@ function swagDOS() {
     }
     //debi(landscape, 'checkLandscape');
     if (landscape == true) {
-        DOS_resize.innerHTML = `.DOS_part { font-size: 3.5vh; }`;
+        if (DOS_resize.innerHTML != `.DOS_part { font-size: 3.5vh; }`) {
+            DOS_resize.innerHTML = `.DOS_part { font-size: 3.5vh; }`;
+        }
     } else if (landscape == false ) {
-        DOS_resize.innerHTML = `.DOS_part { font-size: 2.5vw; }`;
+        if (DOS_resize.innerHTML != `.DOS_part { font-size: 2.5vw; }`) {
+            DOS_resize.innerHTML = `.DOS_part { font-size: 2.5vw; }`;
+        }
     }
-
     documentWidth = document.documentElement.clientWidth || document.body.clientWidth;
     documentHeight = document.documentElement.clientHeight || document.body.clientHeight;
-    
     //debi(`${documentWidth}, ${documentHeight}`, 'document size');
-
     DOS_width = DOS_text.clientWidth;
     DOS_height = DOS_text.clientHeight;
-
     //debi(`${DOS_width}, ${DOS_height}`, 'dos size');
-    
     var distance_from_left = (documentWidth / 2) - (DOS_width / 2);
     var distance_from_top = (documentHeight / 2) - (DOS_height / 2);
-
     //debi(`${distance_from_top}, ${distance_from_left}`, 'dos displace');
-
-    DOS_text.style.left = `${distance_from_left}px`;
-    DOS_text.style.top = `${distance_from_top}px`;
-
+    if (DOS_text.style.left != `${distance_from_left}px`) {
+        DOS_text.style.left = `${distance_from_left}px`;
+    }
+    if (DOS_text.style.top != `${distance_from_top}px`) {
+        DOS_text.style.top = `${distance_from_top}px`;
+    }
 }
-
 
 
 
