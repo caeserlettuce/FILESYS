@@ -66,4 +66,4 @@ function swagDOS() {
 
 
 window.onresize = swagDOS;
-setTimeout(function() {swagDOS()}, 3);
+setTimeout(function() {swagDOS()}, 100);
