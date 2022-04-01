@@ -13,6 +13,12 @@ function debi(message, prefix) {
         deb(message, prefix);
     }
 }
+
+
+function keyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
+
 // variables
 
 var debug = true;
@@ -33,10 +39,45 @@ var DOS_height = DOS_text.clientHeight;
 var time = "00:00";
 var screen = "file";
 
+// file navigation
 
-var FLS_startdir = system["C"];
+// NOTE: paths are not stored internally as the actual json object, they are stored as an array, every value in the array is the value in the json path
+//
+// ex:
+//  (json path would be): system["C"]["folders"][1]
+//
+//  (but internal path would be) : ["C", "folders", 1]
+//
+//  why?? it's so that i can go back directories easier, because i can just remove a value from the internal path and then ill be back
+var NAV_default_path = ["C"];               // the default path that the DOS starts at
+var NAV_current_path = NAV_default_path;    // the current path
+var NAV_column_index = {                    // index of all the display values for each column (left to right) (the values are not split by every 20 values for scrolling pages (yet))
+    "col_1": [      // for column 1
+    ],
+    "col_2": [      // for column 2
+    ],
+    "col_3": [      // for column 3
+    ]
+}
 
-var FLS_curdir = FLS_startdir;
+var NAV_column_display = {                  // just like index but with the entries split by page (every 20 entries)
+    "col_1": [      // for column 1
+        [           // page 1
+
+        ]
+    ],
+    "col_2": [      // for column 2
+        [           // page 1
+
+        ]
+    ],
+    "col_3": [      // for column 3
+        [           // page 1
+
+        ]
+    ]
+}
+
 
 
 deb("variables loaded.", "init");
@@ -56,6 +97,7 @@ function removeLast(str, num) {
 
 // getting into the screen operations (tm)
 
+
 function upDATE() {
     var dat = new Date();
     var hor = dat.getHours();
@@ -69,61 +111,65 @@ function upDATE() {
         min = `0${min}`;
     }
     time = `${hor}:${min}`;     // make it update the time
+    updatePart("time", `${time}`);
 }
 
-function updateFilescreen(part) {
-    var funeral = "";
 
-    superhot_main = [
-        [`┌────────────┬────────┬───────────────────────────${time}──┐`], // 0
-        [`│superhot.exe│--FILE->│ directory:APPS         |>FOLDER< │`], // 1
-        [`│            │        │                                  │`], // 2
-        [`│------------│--------│                                  │`], // 3
-        [`├────────────┴────────┴──────────────────────────────────┤`], // 4
-        [`│C:↖                                                     │`], // 5
-        [`└──────────────────────────────────────FILESYS─${version}──┘`] // 6
-    ];
 
-    var funeral = superhot_main
 
+upDATE();
+
+setInterval(upDATE, 15000);
+
+function indexDir(path) {
+    // index the current directory
+    var seldir
+    if (path) {
+        seldir = path;
+    } else {
+        seldir = NAV_current_path;
+    }
     
-                // WORK ON NAVIGATING THROUGH FILES FIRST!!!!!!!!
+    deb(`indexing path ${seldir.join("\\")}`, 'indexdir');
+
+    var finalJsonPath = ``;
+    for (i in seldir) {
+        finalJsonPath = `${finalJsonPath}`;
+    }
 }
 
 
+function updatePart(part, value) {
+    var part_time = document.getElementById("DOS-FLS-TIME");
+    var part_curdir = document.getElementById("DOS-FLS-CURDIR");
+    var part_version = document.getElementById("DOS-FLS-VER");
+    // part is the part of the screen
+    // value is the new value                         ↖
 
+    // list of parts: all, time, curdir, version, 
+    if (part == "all") {
 
-setInterval(upDATE, 30000);
-
-
-
-
-function updateFileScreen() {
-
-
-    var fileList = FLS_curdir["files"]
-
-    for (i in fileList ) {
-        var filename = fileList[i]["name"];
-        deb(`i: ${i}, file: ${filename}`);
-
+    } else if (part == "time") {
+        part_time.innerHTML = `${value}`;
+    } else if (part == "curdir") {
+        var width = 56;
+        var in_len = value.length;
+        var final = "";
+        if (in_len == width) {                      // if length of file tree is exactly the width of the space
+            final = `${value}`;
+        } else if (in_len < width) {                // if the file tree is shorter than the width of the space
+            var diff = width - in_len;
+            final = `${value}${" ".repeat(diff)}`;
+        } else if (in_len > width) {                // if the file tree is wider than the width of the space
+            var diff = in_len - width;
+            final = `...${value.substring(diff + 3)}`;
+        }
+        
+        part_curdir.innerHTML = `${final}`.replaceAll("↖", "\\");
+    } else if (part == "version") {
+        part_version.innerHTML = `${value}`;
     }
 
-    
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-devSet(superhot_main);
