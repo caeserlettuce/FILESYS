@@ -11,14 +11,14 @@
 //  font-size: 2.5vw;
 
 
-function checkLandscape() {
+function swagDOS() {
     windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     documentWidth = document.documentElement.clientWidth || document.body.clientWidth;
     documentHeight = document.documentElement.clientHeight || document.body.clientHeight;
     window_aspectratio = documentWidth / documentHeight;
     document_aspectratio = documentWidth / documentHeight;
-    debi(document_aspectratio);
+    //debi(document_aspectratio);
     if (document_aspectratio > DOS_aspectratio) {         // landscape
         if (documentWidth < documentHeight) {
             landscape = false;
@@ -34,20 +34,31 @@ function checkLandscape() {
             landscape = false;
         }
     }
-    debi(landscape, 'checkLandscape');
-    return landscape
-}
-
-
-
-function resizeDOS() {
-    //console.log(windowWidth);
-    checkLandscape();
+    //debi(landscape, 'checkLandscape');
     if (landscape == true) {
         DOS_resize.innerHTML = `.DOS_part { font-size: 3.5vh; }`;
     } else if (landscape == false ) {
         DOS_resize.innerHTML = `.DOS_part { font-size: 2.5vw; }`;
     }
+
+    documentWidth = document.documentElement.clientWidth || document.body.clientWidth;
+    documentHeight = document.documentElement.clientHeight || document.body.clientHeight;
+    
+    //debi(`${documentWidth}, ${documentHeight}`, 'document size');
+
+    DOS_width = DOS_text.clientWidth;
+    DOS_height = DOS_text.clientHeight;
+
+    //debi(`${DOS_width}, ${DOS_height}`, 'dos size');
+    
+    var distance_from_left = (documentWidth / 2) - (DOS_width / 2);
+    var distance_from_top = (documentHeight / 2) - (DOS_height / 2);
+
+    //debi(`${distance_from_top}, ${distance_from_left}`, 'dos displace');
+
+    DOS_text.style.left = `${distance_from_left}px`;
+    DOS_text.style.top = `${distance_from_top}px`;
+
 }
 
 
@@ -55,6 +66,5 @@ function resizeDOS() {
 
 
 
-
-resizeDOS();
-window.onresize = resizeDOS;
+window.onresize = swagDOS;
+setTimeout(function() {swagDOS()}, 3);

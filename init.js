@@ -28,6 +28,8 @@ var DOS_text = document.getElementById("DOS_text");
 var DOS_resize = document.getElementById("DOS_resize");
 //var DOS_cursor = document.getElementById("DOS_cursor");
 var DOS_aspectratio = 2.66666666667;
+var DOS_width = DOS_text.clientWidth;
+var DOS_height = DOS_text.clientHeight;
 
 
 deb("variables loaded.", "init");
