@@ -99,7 +99,8 @@ var system = {
     "C": {
         "files": [
             {"name": "file1.txt", "contents": "hello, world!"},
-            {"name": "file2.txt", "contents": "foo bar"}
+            {"name": "file2.txt", "contents": "foo bar"},
+            {"name": "pugs.txt", "contents": "foo bar"},
         ],
         "folders": [
             {"name": "folder1", "contents": {
