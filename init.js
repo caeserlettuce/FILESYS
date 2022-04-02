@@ -57,6 +57,9 @@ var DOS_width = DOS_text.clientWidth;
 var DOS_height = DOS_text.clientHeight;
 var time = "00:00";
 var screen = "file";
+var inputlock = false;
+var scrollLock = false;
+var cursorLock = false;
 
 
 var max_column1_len = 12;
@@ -134,13 +137,13 @@ function indexDir(path) {
         seldir = NAV_current_path;      // if a path is not defined
     }
     
-    deb(`indexing path ${seldir.join("\\")}`, 'indexdir');  // fancy
+    //deb(`indexing path ${seldir.join("\\")}`, 'indexdir');  // fancy
 
     var finalJsonPath = ``;                                 // setup variable
     for (i in seldir) {                                     // for i in path segments
         finalJsonPath = `${finalJsonPath}["${seldir[i]}"]`; // add it to a string version of json notation
     }
-    deb(`getting contents of path ${finalJsonPath}`, 'indexdir');
+    //deb(`getting contents of path ${finalJsonPath}`, 'indexdir');
 
     var dir = eval(`system${finalJsonPath}`);               // eval() it because theres NO OTHER WAY THAT I CAN FIND AAAAA (and then it returns the correct directroy)
 
@@ -172,7 +175,7 @@ function indexDir(path) {
         } else if (file_ext == "ini") {
             file_id = fi["id"];
         }
-        debi(`selected file: ${file_name}, contents: ${file_contents}, info: ${file_info}, id: ${file_id}`);
+        //debi(`selected file: ${file_name}, contents: ${file_contents}, info: ${file_info}, id: ${file_id}`);
         var checked = checkLen(file_name, max_column1_len);
         final_col1.push(checked);
         final_col2.push(file_info);
@@ -187,7 +190,7 @@ function indexDir(path) {
         var folder_ext = folder_name.split(".")[1];
         var folder_contents = fo["contents"];
         var folder_info = ">FOLDER<";
-        debi(`selected file: ${folder_name}, contents: ${folder_contents}, info: ${folder_info}`);
+        //debi(`selected file: ${folder_name}, contents: ${folder_contents}, info: ${folder_info}`);
         var checked = checkLen(folder_name, max_column1_len);
         final_col1.push(checked);
         final_col2.push(folder_info);
@@ -213,10 +216,10 @@ function parseColumnDisplay() {
         var entry = NAV_column_index[0][i];
         var info = NAV_column_index[1][i];
         var contents = NAV_column_index[2][i];
-        deb(`pushing entry: ${entry}, count: ${count}, count2: ${count2}`);
+        //eb(`pushing entry: ${entry}, count: ${count}, count2: ${count2}`);
         if (count >= 20) {
             // new arr!!
-            console.log(work_col1)
+            //console.log(work_col1)
             col1_fin[count2] = work_col1;
             work_col1 = new Array();
             col2_fin[count2] = work_col2;
@@ -224,6 +227,10 @@ function parseColumnDisplay() {
             col3_fin[count2] = work_col3;
             work_col3 = new Array();
             
+            work_col1.push(entry);
+            work_col2.push(info);
+            work_col3.push(contents);
+
             count2 += 1;
             count = 0;
         } else {
@@ -238,9 +245,9 @@ function parseColumnDisplay() {
     col2_fin[count2] = work_col2;
     col3_fin[count2] = work_col3;
 
-    console.log(col1_fin);
-    console.log(col2_fin);
-    console.log(col3_fin);
+    //console.log(col1_fin);
+    //console.log(col2_fin);
+    //console.log(col3_fin);
 
     var count1 = 0;
     var count2 = 0;
@@ -332,7 +339,7 @@ function changePage(columns, up) {
             return "down"
         }
     }
-    deb(`scrolling ${ifup()}`);
+    //deb(`scrolling ${ifup()}, col1: ${col1}, col1: ${col1}, col2: ${col3}`);
 
     if (up == true) {
         factor = -1;
@@ -340,15 +347,50 @@ function changePage(columns, up) {
         factor = 1;
     }
 
-    console.log(NAV_column1_page + factor);
+    //console.log(NAV_column1_page + factor);
 
     if (NAV_column1_page + factor < 0) {
-
-    } else if (NAV_column1_page + factor > col1_limit) {
-        
+    } else if (NAV_column1_page + factor >= col1_limit) {    
     } else {
         NAV_column1_page += factor;
     }
 
+    if (NAV_column2_page + factor < 0) {
+    } else if (NAV_column2_page + factor >= col2_limit) {
+    } else {
+        NAV_column2_page += factor;
+    }
+
+    if (NAV_column3_page + factor < 0) {
+    } else if (NAV_column3_page + factor >= col3_limit) {
+    } else {
+        NAV_column3_page += factor;
+    }
+
     updatePage();
 }
+
+
+
+
+var elem = document.getElementById("jesus");
+    elem.onkeyup = function keyParse(e){
+        if (inputlock == false) {
+            if(e.keyCode == 33) {           // page up
+                if (scrollLock == false) {
+                    changePage([1, 2], true);
+                }
+            } else if(e.keyCode == 34) {    // page down
+                if (scrollLock == false) {
+                    changePage([1, 2], false);
+                }
+            }
+            
+    
+        }
+    }
+        
+
+
+
+
