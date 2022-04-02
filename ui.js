@@ -237,7 +237,34 @@ var system = {
                     {"name": "file6.txt", "contents": "another foo bar is approaching!"}
                 ],
                 "folders": [
-
+                    {"name": "dont look", "contents": {
+                        "files": [
+                            {"name": "../", "contents": "GO UP"},
+                            {"name": "file5.txt", "contents": "never stop hello, world!"},
+                            {"name": "file6.txt", "contents": "another foo bar is approaching!"}
+                        ],
+                        "folders": [
+                            {"name": "seriously this is a secret", "contents": {
+                                "files": [
+                                    {"name": "../", "contents": "GO UP"},
+                                    {"name": "file5.txt", "contents": "never stop hello, world!"},
+                                    {"name": "file6.txt", "contents": "another foo bar is approaching!"}
+                                ],
+                                "folders": [
+                                    {"name": "bruh", "contents": {
+                                        "files": [
+                                            {"name": "../", "contents": "GO UP"},
+                                            {"name": "file5.txt", "contents": "never stop hello, world!"},
+                                            {"name": "file6.txt", "contents": "another foo bar is approaching!"}
+                                        ],
+                                        "folders": [
+                                            
+                                        ]
+                                    }}
+                                ]
+                            }}
+                        ]
+                    }}
                 ]
             }}
         ]
