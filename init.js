@@ -48,8 +48,13 @@ function parseToEval(array) {
     for (i in array) {                                     // for i in path segments
         finalJsonPath = `${finalJsonPath}["${array[i]}"]`; // add it to a string version of json notation
     }
-    deb(`getting contents of path ${finalJsonPath}`, 'indexdir');
+    //deb(`getting contents of path ${finalJsonPath}`, 'indexdir');
     return finalJsonPath
+}
+
+function* times(x) {
+    for (var i = 0; i < x; i++)
+        yield i;
 }
 
 // variables
@@ -73,7 +78,7 @@ var time = "00:00";
 var screen = "file";
 var inputlock = false;
 var scrollLock = false;
-var cursorLock = false;
+var navLock = false;
 
 
 var max_column1_len = 12;
@@ -173,6 +178,30 @@ function parsePath(pathtm) {
     return finalPath
 }
 
+function navFolder(folder_id) {
+    // go to a folder
+    NAV_column1_page = 0;
+    NAV_column2_page = 0;
+    NAV_column3_page = 0;
+    NAV_current_path.push("folders");
+    NAV_current_path.push(folder_id);
+    NAV_current_path.push("contents");
+    updatePage();
+    updatePart("curdir", parsePath());
+}
+
+function navBack() {
+    if (NAV_current_path.length != 1) {
+        NAV_column1_page = 0;
+        NAV_column2_page = 0;
+        NAV_column3_page = 0;
+        for (var i of times(3)) {
+            NAV_current_path.pop();
+        }
+        updatePage();
+        updatePart("curdir", parsePath());
+    }
+}
 
 
 upDATE();
@@ -193,7 +222,7 @@ function indexDir(path) {
     
     var dir = eval(`system${parseToEval(seldir)}`);               // eval() it because theres NO OTHER WAY THAT I CAN FIND AAAAA (and then it returns the correct directroy)
 
-    console.log(dir);
+    //console.log(dir);
     var files = dir["files"];
     var folders = dir["folders"];
 
@@ -315,7 +344,7 @@ function updatePart(part, value) {
     // part is the part of the screen
     // value is the new value                         ↖
 
-    // list of parts: all, time, curdir, version, 
+    // list of parts: all, time, curdir, version, files, 
     if (part == "all") {
 
     } else if (part == "time") {
@@ -432,6 +461,10 @@ var elem = document.getElementById("jesus");
             } else if(e.keyCode == 34) {    // page down
                 if (scrollLock == false) {
                     changePage([1, 2], false);
+                }
+            } else if(e.keyCode == 27) {    // escape key
+                if (navLock == false) {
+                    navBack();
                 }
             }
             
