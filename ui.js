@@ -71,11 +71,13 @@ var template_system = {             // DONT EDIT
             {"name": "start.exe", "contents": "startExecutable();", "id": "4975"},      // setup a simple executable file. the value for "contents" will be run using eval() when the file is executed.
             {"name": "setup.ini", "contents": [                                         // setup of a simple config file. contents should contain a list of all the settings in the file
                 {"name": "debug", "values": [                                               // define a setting. values should be a list of all the values you can select for the setting.
+                    {"name": "../", "contents": "GO UP"},                                   // for going up
                     {"name": "true", "do": "debugTrue();"},                                 // simple setting value. "do" should be the function that will be run when you apply the settings.
                     {"name": "false", "do": "debugFalse();"}                                // ^
                     ]
                 }, 
                 {"name": "postfx", "values": [
+                    {"name": "../", "contents": "GO UP"},
                     {"name": "true", "do": "pfxTrue();"},
                     {"name": "false", "do": "pfxFalse();"}
                     ]
@@ -162,15 +164,75 @@ var system = {
         "folders": [
             {"name": "folder1", "contents": {
                 "files": [
-                    {"name": "file3.txt", "contents": "hello, world again!"},
-                    {"name": "file4.txt", "contents": "another foo bar"}
+                    {"name": "../", "contents": "GO UP"},
+                    {"name": "file1.txt", "contents": "hello, world!"},
+                    {"name": "file2.txt", "contents": "foo bar"},
+                    {"name": "file3.txt", "contents": "foo bar"},
+                    {"name": "file4.txt", "contents": "foo bar"},
+                    {"name": "file5.txt", "contents": "foo bar"},
+                    {"name": "file6.txt", "contents": "foo bar"},
+                    {"name": "file7.txt", "contents": "foo bar"},
+                    {"name": "file8.txt", "contents": "foo bar"},
+                    {"name": "file9.txt", "contents": "foo bar"},
+                    {"name": "file10.txt", "contents": "foo bar"},
+                    {"name": "file11.txt", "contents": "hello, world!"},
+                    {"name": "file12.txt", "contents": "foo bar"},
+                    {"name": "file13.txt", "contents": "foo bar"},
+                    {"name": "file14.txt", "contents": "foo bar"},
+                    {"name": "file15.txt", "contents": "foo bar"},
+                    {"name": "file16.txt", "contents": "foo bar"},
+                    {"name": "file17.txt", "contents": "foo bar"},
+                    {"name": "file18.txt", "contents": "foo bar"},
+                    {"name": "file19.txt", "contents": "foo bar"},
+                    {"name": "file20.txt", "contents": "foo bar"},
+                    {"name": "file21.txt", "contents": "hello, world!"},
+                    {"name": "file22.txt", "contents": "foo bar"},
+                    {"name": "file23.txt", "contents": "foo bar"},
+                    {"name": "file24.txt", "contents": "foo bar"},
+                    {"name": "file25.txt", "contents": "foo bar"},
+                    {"name": "file26.txt", "contents": "foo bar"},
+                    {"name": "file27.txt", "contents": "foo bar"},
+                    {"name": "file28.txt", "contents": "foo bar"},
+                    {"name": "file29.txt", "contents": "foo bar"},
+                    {"name": "file30.txt", "contents": "foo bar"},
+                    {"name": "file31.txt", "contents": "hello, world!"},
+                    {"name": "file32.txt", "contents": "foo bar"},
+                    {"name": "file33.txt", "contents": "foo bar"},
+                    {"name": "file34.txt", "contents": "foo bar"},
+                    {"name": "file35.txt", "contents": "foo bar"},
+                    {"name": "file36.txt", "contents": "foo bar"},
+                    {"name": "file37.txt", "contents": "foo bar"},
+                    {"name": "file38.txt", "contents": "foo bar"},
+                    {"name": "file39.txt", "contents": "foo bar"},
+                    {"name": "file40.txt", "contents": "foo bar"},
+                    {"name": "file41.txt", "contents": "hello, world!"},
+                    {"name": "file42.txt", "contents": "foo bar"},
+                    {"name": "file43.txt", "contents": "foo bar"},
+                    {"name": "file44.txt", "contents": "foo bar"},
+                    {"name": "file45.txt", "contents": "foo bar"},
+                    {"name": "file46.txt", "contents": "foo bar"},
+                    {"name": "file47.txt", "contents": "foo bar"},
+                    {"name": "file48.txt", "contents": "foo bar"},
+                    {"name": "file49.txt", "contents": "foo bar"},
+                    {"name": "file50.txt", "contents": "foo bar"},
+                    {"name": "file51.txt", "contents": "hello, world!"},
+                    {"name": "file52.txt", "contents": "foo bar"},
+                    {"name": "file53.txt", "contents": "foo bar"},
+                    {"name": "file54.txt", "contents": "foo bar"},
+                    {"name": "file55.txt", "contents": "foo bar"},
+                    {"name": "file56.txt", "contents": "foo bar"},
+                    {"name": "file57.txt", "contents": "foo bar"},
+                    {"name": "file58.txt", "contents": "foo bar"},
+                    {"name": "file59.txt", "contents": "foo bar"},
+                    {"name": "file60.txt", "contents": "foo bar"},
                 ],
                 "folders": [
-
+                    {"name": "folder", "contents": {}}
                 ]
             }},
             {"name": "folder2", "contents": {
                 "files": [
+                    {"name": "../", "contents": "GO UP"},
                     {"name": "file5.txt", "contents": "never stop hello, world!"},
                     {"name": "file6.txt", "contents": "another foo bar is approaching!"}
                 ],

@@ -38,6 +38,20 @@ function arrDim(arr) {
     return [ arr.length, arr[0].length ];
 }
 
+
+function copyArr(array) {
+    return [...array]
+}
+
+function parseToEval(array) {
+    var finalJsonPath = ``;                                 // setup variable
+    for (i in array) {                                     // for i in path segments
+        finalJsonPath = `${finalJsonPath}["${array[i]}"]`; // add it to a string version of json notation
+    }
+    deb(`getting contents of path ${finalJsonPath}`, 'indexdir');
+    return finalJsonPath
+}
+
 // variables
 
 var debug = true;
@@ -73,15 +87,16 @@ var max_column_height = ["egg", "egg", "egg", "egg", "egg", "egg", "egg", "egg",
 // NOTE: paths are not stored internally as the actual json object, they are stored as an array, every value in the array is the value in the json path
 //
 // ex:
-//  (json path would be): system["C"]["folders"][1]
+//  (json path would be): system["C"]["folders"][1]["contents"]
 //
-//  (but internal path would be) : ["C", "folders", 1]
+//  (but internal path would be) : ["C", "folders", 1, "contents"]
 //
 //  why?? it's so that i can go back directories easier, because i can just remove a value from the internal path and then ill be back
 var NAV_default_path = ["C"];               // the default path that the DOS starts at
 var NAV_current_path = NAV_default_path;    // the current path
 var NAV_column_index = new Array();
 var NAV_column_display = new Array();
+var NAV_column_select = new Array();
 var NAV_column1_page = 0;
 var NAV_column2_page = 0;
 var NAV_column3_page = 0;
@@ -122,6 +137,42 @@ function upDATE() {
 }
 
 
+//      system["C"]["folders"][1]["contents"]["folders"][2]["contents"]
+//            ["C", "folders", 1, "contents", "folders", 1, "contents"]
+//                              ↖
+function parsePath(pathtm) {
+    var finalPath = `C:↖`;
+    var work_path = NAV_current_path;
+    var raw_workpath = copyArr(work_path);
+    var paths = new Array();
+    if (pathtm) {
+        work_path = pathtm;
+    }
+    if (NAV_current_path == ["C"]) {
+        updatePart("curdir", "C:↖");
+    } else {
+        for (i in work_path) {
+            var cur = work_path[i];
+            console.log("CURRENT!!", cur);
+            paths.push(cur);
+
+            if (cur == "contents") {
+                deb(`found 'contents' in path!`);
+                var wook = copyArr(paths);
+                console.log("before pop", wook);
+                wook.pop();
+                console.log("after pop", wook);
+                var pat = eval(`system${parseToEval(wook)}`);
+                console.log("after eval'd", pat);
+                var name = pat["name"];
+                finalPath = `${finalPath}${name}↖`;
+            }
+        }
+
+    }
+    return finalPath
+}
+
 
 
 upDATE();
@@ -139,14 +190,10 @@ function indexDir(path) {
     
     //deb(`indexing path ${seldir.join("\\")}`, 'indexdir');  // fancy
 
-    var finalJsonPath = ``;                                 // setup variable
-    for (i in seldir) {                                     // for i in path segments
-        finalJsonPath = `${finalJsonPath}["${seldir[i]}"]`; // add it to a string version of json notation
-    }
-    //deb(`getting contents of path ${finalJsonPath}`, 'indexdir');
+    
+    var dir = eval(`system${parseToEval(seldir)}`);               // eval() it because theres NO OTHER WAY THAT I CAN FIND AAAAA (and then it returns the correct directroy)
 
-    var dir = eval(`system${finalJsonPath}`);               // eval() it because theres NO OTHER WAY THAT I CAN FIND AAAAA (and then it returns the correct directroy)
-
+    console.log(dir);
     var files = dir["files"];
     var folders = dir["folders"];
 
@@ -156,10 +203,6 @@ function indexDir(path) {
     var final_col2 = new Array();
     var final_col3 = new Array();
     
-    if (finalJsonPath != '["C"]') {
-        final_col1.push("/..         ");
-        final_col2.push("<UP-FOL>");
-    }
 
     for (i in files) {  // for every file
         var fi = files[i];
@@ -168,6 +211,10 @@ function indexDir(path) {
         var file_contents = fi["contents"].split("\n");
         var file_id = "";
         var file_info = "--FILE->";
+        if (file_name == "../") {
+            file_info = ">UP-FOL<";
+        }
+
         if (file_ext == "txt") {                            // OPERATIONS FOR WHAT DIFFERENT FILES SHOULD DO
             file_id = "";
         } else if (file_ext == "exe") {
@@ -306,6 +353,8 @@ function updatePart(part, value) {
         }
     }
 }
+
+updatePart("curdir", parsePath());
 
 async function updatePage() {
     await indexDir();
