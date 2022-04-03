@@ -521,19 +521,25 @@ function arrowPage(new_sel) {
             var hehe = changePage([1, 2], false);
             if (hehe == true) {
                 updateSelect([new_sel[0], 0]);
-                snd_buzz();
+                snd_key2();
+            } else {
+                snd_beep();
             }
         } else if (new_sel[1] == -1) {  // if it's at the top
             var hehe = changePage([1, 2], true);
             if (hehe == true) {
                 updateSelect([new_sel[0], 19]);
-                snd_buzz();
+                snd_key2();
+            } else {
+                snd_beep();
             }
         } else {
             updateSelect(new_sel);
+            snd_beep();
         }
     } else {
         updateSelect(new_sel);
+        snd_beep();
     }
 }
 
@@ -563,78 +569,87 @@ if (welcome_user == false) {
     welcomeMessage();
 }
 
-var elem = document.getElementById("jesus");
-    elem.onkeyup = function keyParse(e) {
-        if (inputlock == false) {
-            if(e.keyCode == 33) {           // page up
-                if (scrollLock == false) {
-                    if (welcomeLock == false) {
-                        changePage([1, 2], true);
-                        snd_key2();
-                    }
-                }
-            } else if(e.keyCode == 34) {    // page down
-                if (scrollLock == false) {
-                    if (welcomeLock == false) {
-                        changePage([1, 2], false);
-                        snd_key2();
-                    }
-                }
-            } else if(e.keyCode == 27) {    // escape key
-                if (navLock == false) {
-                    if (welcomeLock = true) {
-                        navBack();
-                        snd_key2();
-                    }
-                }
-            } else if(e.keyCode == 13) {    // enter key
-                if (welcomeLock == true) {     // if it is on the welcome screen
-                    pageStart();
-                    snd_key1();
-                }
-            } else if(e.keyCode == 37) {    // left arrow
-                if (navLock == false) {
-                    var cur_x = NAV_column_select[0];
-                    var cur_y = NAV_column_select[1];
-                    var new_coords = [cur_x - 1, cur_y];
-                    deb(new_coords);
-                    arrowPage(new_coords);
-                    snd_beep();
-                }
-            } else if(e.keyCode == 38) {    // up arrow
-                if (navLock == false) {
-                    var cur_x = NAV_column_select[0];
-                    var cur_y = NAV_column_select[1];
-                    var new_coords = [cur_x, cur_y - 1];
-                    deb(new_coords);
-                    arrowPage(new_coords);
-                    snd_beep();
-                }
-            } else if(e.keyCode == 39) {    // right arrow
-                if (navLock == false) {
-                    var cur_x = NAV_column_select[0];
-                    var cur_y = NAV_column_select[1];
-                    var new_coords = [cur_x + 1, cur_y];
-                    deb(new_coords);
-                    arrowPage(new_coords);
-                    snd_beep();
-                }
-            } else if(e.keyCode == 40) {    // down arrow
-                if (navLock == false) {
-                    var cur_x = NAV_column_select[0];
-                    var cur_y = NAV_column_select[1];
-                    var new_coords = [cur_x, cur_y + 1];
-                    deb(new_coords);
-                    arrowPage(new_coords);
-                    snd_beep();
+
+function keyParse(e, keycobe) {
+    if (e == "") {
+        keyCobe = keycobe;
+    } else if (e != undefined || e != null || e != "") {
+        keyCobe = e.keyCode;
+    }
+    
+
+    if (inputlock == false) {
+        if(keyCobe == 33) {           // page up
+            if (scrollLock == false) {
+                if (welcomeLock == false) {
+                    changePage([1, 2], true);
+                    snd_key2();
                 }
             }
-            
-    
+        } else if(keyCobe == 34) {    // page down
+            if (scrollLock == false) {
+                if (welcomeLock == false) {
+                    changePage([1, 2], false);
+                    snd_key2();
+                }
+            }
+        } else if(keyCobe == 27) {    // escape key
+            if (navLock == false) {
+                if (welcomeLock = true) {
+                    navBack();
+                    snd_key2();
+                }
+            }
+        } else if(keyCobe == 13) {    // enter key
+            if (welcomeLock == true) {     // if it is on the welcome screen
+                pageStart();
+                snd_key1();
+            }
+        } else if(keyCobe == 37) {    // left arrow
+            if (navLock == false) {
+                var cur_x = NAV_column_select[0];
+                var cur_y = NAV_column_select[1];
+                var new_coords = [cur_x - 1, cur_y];
+                deb(new_coords);
+                arrowPage(new_coords);
+                snd_beep();
+            }
+        } else if(keyCobe == 38) {    // up arrow
+            if (navLock == false) {
+                var cur_x = NAV_column_select[0];
+                var cur_y = NAV_column_select[1];
+                var new_coords = [cur_x, cur_y - 1];
+                deb(new_coords);
+                arrowPage(new_coords);
+            }
+        } else if(keyCobe == 39) {    // right arrow
+            if (navLock == false) {
+                var cur_x = NAV_column_select[0];
+                var cur_y = NAV_column_select[1];
+                var new_coords = [cur_x + 1, cur_y];
+                deb(new_coords);
+                arrowPage(new_coords);
+                snd_beep();
+            }
+        } else if(keyCobe == 40) {    // down arrow
+            if (navLock == false) {
+                var cur_x = NAV_column_select[0];
+                var cur_y = NAV_column_select[1];
+                var new_coords = [cur_x, cur_y + 1];
+                deb(new_coords);
+                arrowPage(new_coords);
+            }
         }
-    }
         
 
+    }
+}
+    
+
+
+
+var elem = document.getElementById("jesus");
+    elem.onkeyup = keyParse;
 
 
 
