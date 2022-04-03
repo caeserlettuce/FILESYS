@@ -49,7 +49,8 @@ var NAV_default_path = ["C"];               // the default path that the DOS sta
 var NAV_current_path = NAV_default_path;    // the current path
 var NAV_column_index = new Array();
 var NAV_column_display = new Array();
-var NAV_column_select = new Array();
+var NAV_prev_select = [0, 0];
+var NAV_column_select = [0, 0]; // first value is from 0-2, second value is from 0-19
 var NAV_column1_page = 0;
 var NAV_column2_page = 0;
 var NAV_column3_page = 0;
@@ -330,20 +331,20 @@ async function updatePage() {
 
 
 function changePage(columns, up) {
-    var col1;
-    var col2;
-    var col3;
+    var col1 = false;
+    var col2 = false;
+    var col3 = false;
     var col1_limit = NAV_column_display[0].length;
     var col2_limit = NAV_column_display[1].length;
     var col3_limit = NAV_column_display[2].length;
     var factor = 0;
-    if (columns.indexOf(1) > 0) {
+    if (columns.indexOf(1) > -1) {
         col1 = true;
     }
-    if (columns.indexOf(2) > 0) {
+    if (columns.indexOf(2) > -1) {
         col2 = true;
     }
-    if (columns.indexOf(3) > 0) {
+    if (columns.indexOf(3) > -1) {
         col3 = true;
     }
     function ifup() {
@@ -353,7 +354,8 @@ function changePage(columns, up) {
             return "down"
         }
     }
-    //deb(`scrolling ${ifup()}, col1: ${col1}, col1: ${col1}, col2: ${col3}`);
+    deb(`scrolling ${ifup()}, col1: ${col1}, col1: ${col1}, col2: ${col3}`);
+    deb(`limits are: ${col1_limit}, ${col2_limit}, ${col3_limit}`)
 
     if (up == true) {
         factor = -1;
@@ -363,28 +365,58 @@ function changePage(columns, up) {
 
     //console.log(NAV_column1_page + factor);
 
-    if (NAV_column1_page + factor < 0) {
-    } else if (NAV_column1_page + factor >= col1_limit) {    
-    } else {
-        NAV_column1_page += factor;
+    var returnValue = false;
+
+    deb(`col 1 page before: ${NAV_column1_page}`);
+
+    if (col1 == true) {
+        if (NAV_column1_page + factor < 0) {
+            returnValue = false;
+        } else if (NAV_column1_page + factor >= col1_limit) {    
+            returnValue = false;
+        } else {
+            NAV_column1_page += factor;
+            returnValue = true;
+        }
     }
 
-    if (NAV_column2_page + factor < 0) {
-    } else if (NAV_column2_page + factor >= col2_limit) {
-    } else {
-        NAV_column2_page += factor;
+    deb(`col 1 page after: ${NAV_column1_page}`);
+
+    deb(`col 2 page before: ${NAV_column2_page}`);
+    if (col2 == true) {
+        if (NAV_column2_page + factor < 0) {
+            returnValue = false;
+        } else if (NAV_column2_page + factor >= col2_limit) {
+            returnValue = false;
+        } else {
+            NAV_column2_page += factor;
+            returnValue = true;
+        }
     }
 
-    if (NAV_column3_page + factor < 0) {
-    } else if (NAV_column3_page + factor >= col3_limit) {
-    } else {
-        NAV_column3_page += factor;
+    deb(`col 2 page after: ${NAV_column2_page}`);
+
+    deb(`col 3 page before: ${NAV_column3_page}`);
+    if (col3 == true) {
+        if (NAV_column3_page + factor < 0) {
+            returnValue = false;
+        } else if (NAV_column3_page + factor >= col3_limit) {
+            returnValue = false;
+        } else {
+            NAV_column3_page += factor;
+            returnValue = true;
+        }
     }
+
+    deb(`col 3 page after: ${NAV_column3_page}`);
 
     updatePage();
+    return returnValue
 }
 
 function welcomeMessage() {
+    navLock = true;
+    welcomeLock = true;
     var rare = Math.floor(Math.random()* 50);    // 1 in 50 chance of getting a rare message
     var message = "something is broken /srs";
     if (rare == 1) {    // rare one
@@ -446,13 +478,75 @@ function transition(part) {
 
 
 
+// select colour: rgba(255, 0, 0, 0.8);
+
+function updateSelect(new_sel) {   // updates where the selection cursor is
+    var prefixes = ["DOS-FLS-FLIST-NAME-", "DOS-FLS-FLIST-TYPE-", "DOS-FLS-SCREEN-"];
+    
+
+    if (new_sel[0] < 3 && new_sel[0] > -1 && new_sel[1] < 20 && new_sel[1] > -1) {  //within the range
+        NAV_prev_select = [...NAV_column_select];
+        NAV_column_select = new_sel;
+        var x_index = NAV_column_select[0];
+        var y_index = NAV_column_select[1];
+        var prev_x_index = NAV_prev_select[0];
+        var prev_y_index = NAV_prev_select[1];
+    
+        //deb("index is within display limits!!!"); // previous selection
+        var prefix_old = prefixes[prev_x_index]
+        var id_old = `${prefix_old}${prev_y_index}`;
+        var selected_old = document.getElementById(id_old);
+        selected_old.style.backgroundColor = "";
+        //deb(id);
+    
+        //deb("index is within display limits!!!"); // new selection
+        var prefix_new = prefixes[x_index]
+        var id_new = `${prefix_new}${y_index}`;
+        var selected_new = document.getElementById(id_new);
+        selected_new.style.backgroundColor = "rgba(255, 0, 0, 0.8)";
+        //deb(id);
+    
+    } else {
+        deb("selection is outside of screen index range.", "updateSelect");
+    }
+}
+
+
+function arrowPage(new_sel) {
+    if (new_sel[0] == 0 || new_sel[0] == 1) {   // if it's on the first or second column
+    
+        deb("AAAAA");
+
+        if (new_sel[1] == 20 ) {  // if it's at the bottom of a page
+            var hehe = changePage([1, 2], false);
+            if (hehe == true) {
+                updateSelect([new_sel[0], 0]);
+                snd_buzz();
+            }
+        } else if (new_sel[1] == -1) {  // if it's at the top
+            var hehe = changePage([1, 2], true);
+            if (hehe == true) {
+                updateSelect([new_sel[0], 19]);
+                snd_buzz();
+            }
+        } else {
+            updateSelect(new_sel);
+        }
+    } else {
+        updateSelect(new_sel);
+    }
+}
+
+
+
 
 DOS_welcome_text.style.display = "";
 DOS_text.style.display = "none";
 
 function pageStart() {
     welcome_user = false;
-    welcomeLock = true;
+    welcomeLock = false;
+    navLock = false;
     DOS_welcome_text.style.display = "none";
     DOS_text.style.display = "";
     swagDOS();
@@ -460,6 +554,7 @@ function pageStart() {
     setInterval(upDATE, 15000);
     updatePage();
     background_audio();
+    updateSelect([0,0]);
 }
 
 if (welcome_user == false) {
@@ -469,20 +564,20 @@ if (welcome_user == false) {
 }
 
 var elem = document.getElementById("jesus");
-    elem.onkeyup = function keyParse(e){
+    elem.onkeyup = function keyParse(e) {
         if (inputlock == false) {
             if(e.keyCode == 33) {           // page up
                 if (scrollLock == false) {
-                    if (welcomeLock = true) {
+                    if (welcomeLock == false) {
                         changePage([1, 2], true);
-                        snd_beep();
+                        snd_key2();
                     }
                 }
             } else if(e.keyCode == 34) {    // page down
                 if (scrollLock == false) {
-                    if (welcomeLock = true) {
+                    if (welcomeLock == false) {
                         changePage([1, 2], false);
-                        snd_beep();
+                        snd_key2();
                     }
                 }
             } else if(e.keyCode == 27) {    // escape key
@@ -493,9 +588,45 @@ var elem = document.getElementById("jesus");
                     }
                 }
             } else if(e.keyCode == 13) {    // enter key
-                if (welcomeLock == false) {     // if it is on the welcome screen
+                if (welcomeLock == true) {     // if it is on the welcome screen
                     pageStart();
                     snd_key1();
+                }
+            } else if(e.keyCode == 37) {    // left arrow
+                if (navLock == false) {
+                    var cur_x = NAV_column_select[0];
+                    var cur_y = NAV_column_select[1];
+                    var new_coords = [cur_x - 1, cur_y];
+                    deb(new_coords);
+                    arrowPage(new_coords);
+                    snd_beep();
+                }
+            } else if(e.keyCode == 38) {    // up arrow
+                if (navLock == false) {
+                    var cur_x = NAV_column_select[0];
+                    var cur_y = NAV_column_select[1];
+                    var new_coords = [cur_x, cur_y - 1];
+                    deb(new_coords);
+                    arrowPage(new_coords);
+                    snd_beep();
+                }
+            } else if(e.keyCode == 39) {    // right arrow
+                if (navLock == false) {
+                    var cur_x = NAV_column_select[0];
+                    var cur_y = NAV_column_select[1];
+                    var new_coords = [cur_x + 1, cur_y];
+                    deb(new_coords);
+                    arrowPage(new_coords);
+                    snd_beep();
+                }
+            } else if(e.keyCode == 40) {    // down arrow
+                if (navLock == false) {
+                    var cur_x = NAV_column_select[0];
+                    var cur_y = NAV_column_select[1];
+                    var new_coords = [cur_x, cur_y + 1];
+                    deb(new_coords);
+                    arrowPage(new_coords);
+                    snd_beep();
                 }
             }
             

@@ -4,6 +4,7 @@
 var aud_keyboard_1 = document.getElementById("aud_keyboard_1");
 var aud_keyboard_2 = document.getElementById("aud_keyboard_2");
 var aud_beep = document.getElementById("aud_beep");
+var aud_buzz = document.getElementById("aud_buzz");
 var aud_anne = document.getElementById("aud_anne");
 
 function doublePlay(curplayer, a, b){
@@ -32,6 +33,10 @@ function snd_key2() {
 function snd_beep() {
     aud_beep.currentTime = 0;
     aud_beep.play();
+}
+function snd_buzz() {
+    aud_buzz.currentTime = 0;
+    aud_buzz.play();
 }
 
 //aud_beep.play();
