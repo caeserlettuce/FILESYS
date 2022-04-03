@@ -11,6 +11,8 @@ var window_aspectratio = windowWidth / windowHeight;
 var document_aspectratio = documentWidth / documentHeight;
 var DOS = document.getElementById("DOS");
 var DOS_text = document.getElementById("DOS_text");
+var DOS_welcome_text = document.getElementById("DOS_welcome");
+var DOS_welcome_textbar = document.getElementById("welcome-textbar");
 var DOS_resize = document.getElementById("DOS_resize");
 //var DOS_cursor = document.getElementById("DOS_cursor");
 var DOS_aspectratio = 2.66666666667;
@@ -21,13 +23,17 @@ var screen = "file";
 var inputlock = false;
 var scrollLock = false;
 var navLock = false;
+var welcome_user = true;
+var welcomeLock = !welcome_user;
+
+var SET_animations = true;
 
 
 var max_column1_len = 12;
 var max_column2_len = 8;
 var max_column2_len = 34;
 var max_column_height = ["egg", "egg", "egg", "egg", "egg", "egg", "egg", "egg", "egg", "egg", "egg", "egg", "egg", "egg", "egg", "egg", "egg", "egg", "egg", "egg"];
-
+var display_animation_length = ["egg", "egg", "egg", "egg"];
 
 // file navigation
 
@@ -81,6 +87,7 @@ function upDATE() {
     }
     time = `${hor}:${min}`;     // make it update the time
     updatePart("time", `${time}`);
+    transition("time");
 }
 
 
@@ -145,10 +152,6 @@ function navBack() {
     }
 }
 
-
-upDATE();
-
-setInterval(upDATE, 15000);
 
 function indexDir(path) {
     // index the current directory
@@ -294,16 +297,7 @@ function updatePart(part, value) {
     } else if (part == "curdir") {
         var width = 56;
         var in_len = value.length;
-        var final = "";
-        if (in_len == width) {                      // if length of file tree is exactly the width of the space
-            final = `${value}`;
-        } else if (in_len < width) {                // if the file tree is shorter than the width of the space
-            var diff = width - in_len;
-            final = `${value}${" ".repeat(diff)}`;
-        } else if (in_len > width) {                // if the file tree is wider than the width of the space
-            var diff = in_len - width;
-            final = `...${value.substring(diff + 3)}`;
-        }
+        var final = checkLen(value, width, true);
         
         part_curdir.innerHTML = `${final}`.replaceAll("↖", "\\");
     } else if (part == "version") {
@@ -333,7 +327,7 @@ async function updatePage() {
     await updatePart("files");
 }
 
-updatePage();
+
 
 function changePage(columns, up) {
     var col1;
@@ -390,23 +384,113 @@ function changePage(columns, up) {
     updatePage();
 }
 
+function welcomeMessage() {
+    var rare = Math.floor(Math.random()* 50);    // 1 in 50 chance of getting a rare message
+    var message = "something is broken /srs";
+    if (rare == 1) {    // rare one
+        message = getRandomFromArr(welcome_messages_rare);
+    } else {            // basic one (ew)
+        message = getRandomFromArr(welcome_messages);
+    }
+    
+    var finalMessage = checkLen(message, 53, false);
+    DOS_welcome_textbar.innerHTML = `${finalMessage}`;
+}
 
 
+
+async function animateTime(finalAnim, speed) {
+    return new Promise((resolve,reject)=>{
+        //here our function should be implemented 
+        
+        for (let i = 0; i < finalAnim.length + 1; i++) {
+            //deb(finalAnim[i]);
+            setTimeout(function timer() {
+                updatePart("time", finalAnim[i]);
+                if (i == 4) { 
+                    resolve();
+                    updatePart("time", time);
+                }
+            }, i * speed);
+        }
+    });
+}
+
+function transition(part) {
+    if (SET_animations == true) {
+        var finalAnim = new Array();
+        var speed = 50;
+        if (part == "time") {
+            var text = time.split("");
+            for (i in display_animation_length) {
+                var charset = transition_text[i];
+                finalAnim.push("");
+                for (e in text) {
+                    var letter = text[e];
+                    var replace = getRandomFromArr(charset);
+
+                    if (replace == " " || letter == " ") {
+                        finalAnim[i] = `${finalAnim[i]}${letter}`;
+                    } else {
+                        finalAnim[i] = `${finalAnim[i]}${replace}`;
+                    }
+
+
+                }
+            }
+        }
+        //console.log(finalAnim);
+        animateTime(finalAnim, 75);
+    }
+}
+
+
+
+
+DOS_welcome_text.style.display = "";
+DOS_text.style.display = "none";
+
+function pageStart() {
+    welcome_user = false;
+    welcomeLock = true;
+    DOS_welcome_text.style.display = "none";
+    DOS_text.style.display = "";
+    swagDOS();
+    upDATE();
+    setInterval(upDATE, 15000);
+    updatePage();
+}
+
+if (welcome_user == false) {
+    pageStart();
+} else {
+    welcomeMessage();
+}
 
 var elem = document.getElementById("jesus");
     elem.onkeyup = function keyParse(e){
         if (inputlock == false) {
             if(e.keyCode == 33) {           // page up
                 if (scrollLock == false) {
-                    changePage([1, 2], true);
+                    if (welcomeLock = true) {
+                        changePage([1, 2], true);
+                    }
                 }
             } else if(e.keyCode == 34) {    // page down
                 if (scrollLock == false) {
-                    changePage([1, 2], false);
+                    if (welcomeLock = true) {
+                        changePage([1, 2], false);
+                    }
                 }
             } else if(e.keyCode == 27) {    // escape key
                 if (navLock == false) {
-                    navBack();
+                    if (welcomeLock = true) {
+                        navBack();
+                    }
+                }
+            } else if(e.keyCode == 13) {    // enter key
+                if (welcomeLock == false) {     // if it is on the welcome screen
+                    pageStart();
                 }
             }
             

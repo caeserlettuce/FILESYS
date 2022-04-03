@@ -1,15 +1,9 @@
-//▓▒░
-//▗▖▝▘▟▙▜▛▚▞█
-//▉▊▋▌▍▎▏
-//▇▆▅▄▃▂▁
-//
+
 //│┴┬├─┤┼┌┐└┘
 //┃┻┳┣━┫╋┏┓┗┛
 //║╩╦╠═╣╬╔╗╚╝
-//       ╒
-//
-//
-//
+// ╨╤╟ ╡╪╓╖╙╜
+// ╧╥╞ ╢╫╒╕╘╛
 //╿┸┯┞ ┦╀┍┑┖┚
 //╽┷┰┟ ┧╁┎┒┕┙
 // ┵┭┠╾┥┽╭╮╯╰
@@ -24,10 +18,25 @@
 //    ╱ ╊
 //    ╲ ┿
 //      ╂
-// USE ↖ IN PLACE OF \ SO I CAN DRAW THE ASCII ART NICELY WITHOUT HAVING TO DOUBLE UP THE BACKSPACES!!
-					
+//          ↖
+//▓▒░
+//▗▖▝▘▟▙▜▛▚▞█
+//▉▊▋▌▍▎▏
+//▇▆▅▄▃▂▁
+//
 
-═	║		╓	╔	╕	╖	╗	╘	╙	╚	╛	╜	╝	╞	╟   ╠	╡	╢	╣	╤	╥	╦	╧	╨	╩	╪	╫	╬	
+// USE ↖ IN PLACE OF \ SO I CAN DRAW THE ASCII ART NICELY WITHOUT HAVING TO DOUBLE UP THE BACKSPACES!!
+
+var transition_text = [
+    [ "█", "▓", "▒", "░", "░", " ", " ", " ", " "],
+    [ "▓", "▒", "░", "░", " ", " ", " ", " ", " "],
+    [ "▒", "░", "░", " ", " ", " ", " ", " ", " ", " "],
+    [ "▒", "░", " ", " ", " ", " ", " ", " ", " ", " "]
+]
+
+
+
+
 var superhot_main = `   ┌────────────┬────────┬───────────────────────────14:17──┐   
    │superhot.exe│--FILE->│ directory:APPS         |>FOLDER< │   
    │readme.txt  │--FILE->│                                  │   
@@ -79,7 +88,134 @@ var superhot_app = `
 
 //var filesystem_template = []
 
-
+var welcome_messages = [
+    "FILESYS WELCOMES YOU!",
+    "FILESYS!",
+    "FILESYS, lemon demon approved!",
+    "FILESYS",
+    "FILESYS, definitely not a copy of superhot's menu",
+    "FILESYS - hello, i'm here, i'm living in the wall",
+    "FILESUS WELCOMES YOU!",
+    "FILESUS!",
+    "FILESYS - add console.log() until it works...",
+    "FILESYS - coded in javascript",
+    "FILESYS - i want to murder the creator of javascript",
+    "FILESYS - there are definitely no secrets",
+    "FILESYS - haha funny",
+    "FILESYS - twitter.com was a mistake",
+    "FILESYS - let's eat children in the dinosaurchestra",
+    "FILESYS - let's rock out in the dinosaurchestra",
+    "FILESYS - let's all shout in the dinosaurchestra",
+    "FILESYS - let's have fun in the dinosaurchestra",
+    "FILESYS - salem is an insane cat",
+    "FILESYS - grain the block johnson",
+    "FILESYS - this weekend?",
+    "FILESYS - LAWNMOWER",
+    "we've been trying to reach you about your car's extended warrany",
+    "FILESYS - this is the ultimate showdown!",
+    "FILESYS - mr. rogers in a bloodstained sweater",
+    "FILESYS - what kind of milk were you?",
+    "FILESYS - im in spain without the a",
+    "FILESYS - i dont wanna go to brazil :sob:",
+    "FILESYS - hip hurrah for the dinosaurchestra",
+    "FILESYS - we wanna be your imaginary friend",
+    "FILESYS - love yourself <3",
+    "FILESYS - you are loved <3",
+    "FILESYS - ur mom",
+    "FILESYS - your mother",
+    "FILESYS - among us",
+    "FILESYS - everyone is here",
+    "FILESYS - the fitness gram pacer test is a multi-stage aerobic capacity test that progressively gets more difficult as it continues",
+    "FILESYS - do u know da wae?",
+    "FILESYS - BEES! BEES! BEES! BEES!",
+    "cover yourself in oil, you'll fly in the rain",
+    "FILESYS - i'll cover you in honey",
+    "FILESYS - 42",
+    "FILESYS - if the court has no objections",
+    "FILESYS - neil has been in a skull for 10 years now",
+    "FILESYS - 'memory hoarder' out now!",
+    "FILESYS - blame the man in the chicken costume",
+    "FILESYS - this sentence is false",
+    "FILESYS - *crab rave*",
+    "FILESYS - omg!!!!!!!!!!",
+    "FILESYS - EVERYBODY LOVES RAYMOND",
+    "FILESYS - mt. saint helens is about to blow up",
+    "FILESYS - adrien brody adrien brody adrien brody adrien brody",
+    "FILESYS - you're at the party",
+    "FILESYS - 24-hour pizza pie power",
+    "FILESYS - LGBTQ+ rights are human rights",
+    "FILESYS - you are not alone",
+    "FILESYS - look behind you.",
+    "FILESYS - there's weeping from the attic",
+    "FILESYS - IT'S COMING IT'S COMING IT'S COMING IT'S COMING it'S COMING",
+    "FILESYS - insert facebook minion meme",
+    "FILESYS - but look, i made you some content!",
+    "FILESYS - it's a beautiful day to stay inside",
+    "FILESYS - imma facetime with my mom tonight",
+    "FILESYS - linux moment",
+    "FILESYS - we think we know you",
+    "FILESYS - that is how the world works!",
+    "FILESYS - hey! it's sock-o!",
+    "FILESYS - benson my beloved <3",
+    "FILESYS - please know you are loved <3",
+    "FILESYS - read a book or something i dont know",
+    '"i was just trying to become a better person"',
+    "FILESYS - this is text! on a computer screen!",
+    "FILESYS - an avocado!",
+    "FILESYS - D'oh!",
+    "FILESYS - dream is overrated",
+    "FILESYS - TECHNOBLADE NEVER DIES!!!",
+    "i drop kicked that child in self defense!",
+    "FILESYS - a goat cheese salad",
+    "FILESYS - according to youtube statistics, only 50% of people are actually subscribed",
+    "FILESYS - unpaid intern, WAHDAHDAHDAH!!",
+    "barely people, somehow legal, unpaid interns",
+    "ceo, entrepreneur, born in 1964, jeffery bezos!",
+    "FILESYS - can one be funny when stuck in a room?",
+    "FILESYS - well, well, look who's inside again",
+    "FILESYS - L + ratio + u fell off + walk the plank + you have scurvy + no parrots + poly does not want a cracker + both legs + no hook + ",
+    "FILESYS - I'M, TURNING, 30!",
+    "FILESYS - welcome to the internet!",
+    "FILESYS - from wikipedia, the FREE encyclopedia",
+    "how we feelin out there tonight? i'm not feeling good",
+    "FILESYS - dog",
+    "FILESYS - please take care of yourself <3",
+    "if jesus can walk on water, can he swim on land?",
+    "just nod or shake your head and we'll do the rest",
+    "which power ranger are you? take this quirky quiz!",
+    "could i interest you in anything, all of the time?",
+    "and if we stick together, who knows what we'll do?",
+    "FILESYS - mwahahhahaha, MWHAHAHWHAHAHHAHAAHAHHA!!!!!",
+    "FILESYS - apathy's a tradgedy, and boredom's a crime!",
+    "FILESYS - jeffery bezos, jeffery bezos, you did it!",
+    "FILESYS - you are strong <3",
+    "are you feeling nervous? are you having fun?",
+    "FILESYS - prolongued eye contact.",
+    "FILESYS - funny space rock!!!!",
+    "FILESYS - i promise to never go outside again!",
+    "FILESYS - so this is how it ends?",
+    "FILESYS - bo likes to dance like this",
+    "FILESYS - bo wants to make you feel comfortable",
+    "FILESYS - do you wanna see a maigic trick?",
+    "FILESYS - MAGIC ISN'T REAL! or is it?",
+    "FILESYS - what are you doing?",
+    "FILESYS - you are valid <3",
+    "FILESYS - and the pentacorn spoke thus:",
+    "FILESYS - he was safe. for now...",
+    "FILESYS - it's hard to be a lizard!",
+    "FILESYS - consider this a threat",
+    "FILESYS - naturally good!",
+    "FILESYS - san francisco!!!!",
+    "FILESYS - HE MEANT TO KNOCK THE WATER OVER!!",
+    "i hate catchy choruses, and i'm a hypocrite",
+    "FILESYS - eating a clock is time consuming",
+    "FILESYS - taco bell",
+    "FILESYS - java exploit found..."
+]
+var welcome_messages_rare = [
+    "no thank you",
+    "this has a 1 in 100 chance of showing up!"
+]
 
 // system is structured like this:
 

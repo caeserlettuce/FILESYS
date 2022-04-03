@@ -49,15 +49,25 @@ function swagDOS() {
     //debi(`${documentWidth}, ${documentHeight}`, 'document size');
     DOS_width = DOS_text.clientWidth;
     DOS_height = DOS_text.clientHeight;
+    DOS_welcome_width = DOS_welcome_text.clientWidth;
+    DOS_welcome_height = DOS_welcome_text.clientHeight;
     //debi(`${DOS_width}, ${DOS_height}`, 'dos size');
     var distance_from_left = (documentWidth / 2) - (DOS_width / 2);
     var distance_from_top = (documentHeight / 2) - (DOS_height / 2);
+    var welcome_distance_from_left = (documentWidth / 2) - (DOS_welcome_width / 2);
+    var welcome_distance_from_top = (documentHeight / 2) - (DOS_welcome_height / 2);
     //debi(`${distance_from_top}, ${distance_from_left}`, 'dos displace');
     if (DOS_text.style.left != `${distance_from_left}px`) {
         DOS_text.style.left = `${distance_from_left}px`;
     }
     if (DOS_text.style.top != `${distance_from_top}px`) {
         DOS_text.style.top = `${distance_from_top}px`;
+    }
+    if (DOS_welcome_text.style.left != `${welcome_distance_from_left}px`) {
+        DOS_welcome_text.style.left = `${welcome_distance_from_left}px`;
+    }
+    if (DOS_welcome_text.style.top != `${welcome_distance_from_top}px`) {
+        DOS_welcome_text.style.top = `${welcome_distance_from_top}px`;
     }
 }
 

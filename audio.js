@@ -11,7 +11,7 @@ aud_background.loop = true;
 
 aud_beep.muted = true;
 
-aud_beep.play();
+//aud_beep.play();
 
 var current_player = "a";
 var background_a = document.getElementById("aud_background_1");

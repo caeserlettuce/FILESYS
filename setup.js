@@ -24,7 +24,7 @@ function keyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }
 
-function checkLen(value, len) {
+function checkLen(value, len, beginning) {
     var in_len = value.length;
     var final = "";
     if (in_len == len) {                      // if length of file tree is exactly the width of the space
@@ -34,7 +34,11 @@ function checkLen(value, len) {
         final = `${value}${" ".repeat(diff)}`;
     } else if (in_len > len) {                // if the file tree is wider than the width of the space
         var diff = in_len - len;
-        final = `...${value.substring(diff + 3)}`;
+        if (beginning == true) {
+            final = `...${value.substring(diff + 3)}`;
+        } else {
+            final = `${value.substring(0, in_len - (diff + 3))}...`;
+        }
     }
     return final;
 }
@@ -60,4 +64,10 @@ function parseToEval(array) {
 function* times(x) {
     for (var i = 0; i < x; i++)
         yield i;
+}
+
+function getRandomFromArr(inArray) {
+    // gets random element from array
+    var hehe = inArray[Math.floor(Math.random()* inArray.length)];
+    return hehe
 }
