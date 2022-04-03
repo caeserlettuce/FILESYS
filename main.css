@@ -1,16 +1,16 @@
 @font-face {
     font-family: FIXEDSYS;
-    src: url(assets/FIXEDSYS.ttf);
+    src: url(assets/fonts/FIXEDSYS.ttf);
 }
 
 @font-face {
     font-family: DOSVGA;
-    src: url(assets/DOSVGA_437.ttf);
+    src: url(assets/fonts/DOSVGA_437.ttf);
 }
 
 @font-face {
     font-family: DOSVGA_WIN;
-    src: url(assets/DOSVGA_437_WIN.ttf);
+    src: url(assets/fonts/DOSVGA_437_WIN.ttf);
 }
 
 body {

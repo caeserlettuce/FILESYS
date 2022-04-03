@@ -6,9 +6,28 @@
 //│┴┬├─┤┼┌┐└┘
 //┃┻┳┣━┫╋┏┓┗┛
 //║╩╦╠═╣╬╔╗╚╝
+//       ╒
 //
+//
+//
+//╿┸┯┞ ┦╀┍┑┖┚
+//╽┷┰┟ ┧╁┎┒┕┙
+// ┵┭┠╾┥┽╭╮╯╰
+// ┶┮┝╼┨┾
+// ┹┱┡ ┩╇
+// ┺┲┢ ┪╈
+//╹   ╸ ╃
+//╻   ╺ ╄
+//╵   ╴ ╅
+//╷   ╶ ╆
+//    ╳ ╉
+//    ╱ ╊
+//    ╲ ┿
+//      ╂
 // USE ↖ IN PLACE OF \ SO I CAN DRAW THE ASCII ART NICELY WITHOUT HAVING TO DOUBLE UP THE BACKSPACES!!
+					
 
+═	║		╓	╔	╕	╖	╗	╘	╙	╚	╛	╜	╝	╞	╟   ╠	╡	╢	╣	╤	╥	╦	╧	╨	╩	╪	╫	╬	
 var superhot_main = `   ┌────────────┬────────┬───────────────────────────14:17──┐   
    │superhot.exe│--FILE->│ directory:APPS         |>FOLDER< │   
    │readme.txt  │--FILE->│                                  │   

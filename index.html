@@ -105,7 +105,11 @@ DEFAULT FULL APPLICATION SCREEN:
   <body id="jesus">
     <style id="DOS_resize"></style> 
 
+      <div class="user-greet" id="user-greet">
+        <pre class="user-greet-inner" id="user-greet-inner">
 
+</pre>
+      </div>
 
     
       <div class="display DOS" id="DOS">
@@ -134,9 +138,37 @@ DEFAULT FULL APPLICATION SCREEN:
 ├────────────┴────────┴──────────────────────────────────┤
 │<span id="DOS-FLS-CURDIR">C:\                                                     </span>│
 └───────────────────────────────────────FILESYS<span id="DOS-FLS-VER">v0.0.01a</span>──┘
-        </pre>
+</pre>
       </div>
-    
+
+
+
+
+      <!--audio stuffs   [ ALWAYS HAVE THESE DECLARED BEFORE THE JS OR ELSE IT WONT WORK ]-->
+
+      <div class="audios">
+        <audio id="aud_background_1">
+          <source src="assets/sounds/aud_background.mp3" type="audio/mpeg" >
+          <source src="assets/sounds/aud_background.wav" type="audio/wav" >
+        </audio>
+        <audio id="aud_background_2">
+          <source src="assets/sounds/aud_background.mp3" type="audio/mpeg" >
+          <source src="assets/sounds/aud_keyboard_1.wav" type="audio/wav" >
+        </audio>
+        <audio id="aud_keyboard_1">
+          <source src="assets/sounds/aud_keyboard_1.mp3" type="audio/mpeg" >
+          <source src="assets/sounds/aud_keyboard_1.wav" type="audio/wav" >
+        </audio>
+        <audio id="aud_keyboard_2">
+          <source src="assets/sounds/aud_keyboard_2.mp3" type="audio/mpeg" >
+          <source src="assets/sounds/aud_keyboard_2.wav" type="audio/wav" >
+        </audio>
+        <audio id="aud_beep">
+          <source src="assets/sounds/aud_beep.mp3" type="audio/mpeg" >
+          <source src="assets/sounds/aud_beep.wav" type="audio/wav" >
+        </audio>
+
+        
     <script src="setup.js"></script>
     <script src="audio.js"></script>
     <script src="ui.js"></script>
@@ -144,19 +176,7 @@ DEFAULT FULL APPLICATION SCREEN:
     <script src="pageResize.js"></script>
     <script src="run.js"></script>
 
-    <div class="audios">
-      <audio id="aud_background">
-        <source src="assets/aud_background.mp3" type="audio/mpeg" >
-      </audio>
-      <audio id="aud_keyboard_1">
-        <source src="assets/aud_keyboard_1.mp3" type="audio/mpeg" >
-      </audio>
-      <audio id="aud_keyboard_2">
-        <source src="assets/aud_keyboard_2.mp3" type="audio/mpeg" >
-      </audio>
-      <audio id="aud_beep">
-        <source src="assets/aud_beep.mp3" type="audio/mpeg" >
-      </audio>
+    
     </div>
   </body>
 </html>
