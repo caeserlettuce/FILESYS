@@ -255,7 +255,29 @@ var template_system = {             // DONT EDIT
 var system = {
     "C": {
         "files": [
-            {"name": "file1.txt", "contents": "hello, world!"},
+            {"name": "file1.txt", "contents": `hello, world!
+hello, gordon!
+hello, gordon!
+hello, gordonAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!
+hello, gordon!
+hello, gordon!
+hello, gordon!
+hello, gordon!
+hello, gordon!
+hello, gordon!
+hello, you!
+hello, you!
+hello, you!
+hello, you!
+hello, you!
+hello, you!
+hello, you!
+hello, you!
+hello, you!
+hello, you!
+hello, you!
+hello, you!
+hello, you!`},
             {"name": "file2.txt", "contents": "foo bar"},
             {"name": "file3.txt", "contents": "foo bar"},
             {"name": "file4.txt", "contents": "foo bar"},

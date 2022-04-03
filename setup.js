@@ -55,7 +55,13 @@ function copyArr(array) {
 function parseToEval(array) {
     var finalJsonPath = ``;                                 // setup variable
     for (i in array) {                                     // for i in path segments
-        finalJsonPath = `${finalJsonPath}["${array[i]}"]`; // add it to a string version of json notation
+        var add = array[i];
+        if (typeof add === 'string') { // if string is number
+            finalJsonPath = `${finalJsonPath}["${add}"]`; // add it to a string version of json notation
+        } else {
+            finalJsonPath = `${finalJsonPath}[${add}]`; // add it to a string version of json notation
+        }
+        
     }
     //deb(`getting contents of path ${finalJsonPath}`, 'indexdir');
     return finalJsonPath

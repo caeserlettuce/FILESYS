@@ -49,6 +49,7 @@ var NAV_default_path = ["C"];               // the default path that the DOS sta
 var NAV_current_path = NAV_default_path;    // the current path
 var NAV_column_index = new Array();
 var NAV_column_display = new Array();
+var NAV_parsed_txtfile = new Array();
 var NAV_prev_select = [0, 0];
 var NAV_column_select = [0, 0]; // first value is from 0-2, second value is from 0-19
 var NAV_column1_page = 0;
@@ -86,9 +87,13 @@ function upDATE() {
     if (min.length == 1) {
         min = `0${min}`;
     }
+    var prevTime = time;
     time = `${hor}:${min}`;     // make it update the time
-    updatePart("time", `${time}`);
-    transition("time");
+    if (time != prevTime) {
+        updatePart("time", `${time}`);
+        transition("time");
+    }
+    
 }
 
 
@@ -224,47 +229,85 @@ function indexDir(path) {
     NAV_column_index[2] = final_col3;
 }
 
+function parseTxtFile() {
+    var file = "s";
+    var x_list = NAV_column1_page * 20 + NAV_column_select[1];
+    //deb(x_list);
+    var fileContentsPAth = parseToEval([...NAV_current_path, "files", x_list, "contents"]);
+    var fileContentsPoop = parseToEval([...NAV_current_path, "files"]);
+    //deb(fileContentsPAth);
+    var contentExist = eval(`system${fileContentsPoop}.hasOwnProperty(${x_list})`);
+    var content = "";
+    if (contentExist == true) {
+        content = eval(`system${fileContentsPAth}`);
+    } else {
+        content = " ";
+    }
+    //console.log(content);
 
-function parseColumnDisplay() {
+    content = content.split("\n");
+
+    var finalContent = new Array();
+
+    for (i in content) {
+        var enty = content[i];
+        var final = enty.match(/.{1,34}/g)
+
+        for (i in final) {
+            var len = final[i].length;
+            var diff = 34 - len;
+            finalContent.push(`${final[i]}${" ".repeat(diff)}`)
+        }
+
+    }
+    
+    return finalContent
+
+}
+
+function parseThirdColumn(txtparse) {
+    var contents_index = txtparse
     var count = 0;
     var count2 = 0;
-    var work_col1 = new Array();
-    var work_col2 = new Array();
+    //var count3 = 0;
+    //var count4 = 0;
+    //var work_col1 = new Array();
+    //var work_col2 = new Array();
     var work_col3 = new Array();
-    var col1_fin = new Array();
-    var col2_fin = new Array();
+    //var col1_fin = new Array();
+    //var col2_fin = new Array();
     var col3_fin = new Array();
-    for (i in NAV_column_index[0]) {
-        var entry = NAV_column_index[0][i];
-        var info = NAV_column_index[1][i];
-        var contents = NAV_column_index[2][i];
-        //eb(`pushing entry: ${entry}, count: ${count}, count2: ${count2}`);
+    for (i in contents_index) {
+        //var entry = NAV_column_index[0][i];
+        //var info = NAV_column_index[1][i];
+        var contents = contents_index[i];
+        //deb(`pushing entry: ${entry}, count: ${count}, count2: ${count2}`);
         if (count >= 20) {
             // new arr!!
             //console.log(work_col1)
-            col1_fin[count2] = work_col1;
-            work_col1 = new Array();
-            col2_fin[count2] = work_col2;
-            work_col2 = new Array();
+            //col1_fin[count2] = work_col1;
+            //work_col1 = new Array();
+            //col2_fin[count2] = work_col2;
+            //work_col2 = new Array();
             col3_fin[count2] = work_col3;
             work_col3 = new Array();
             
-            work_col1.push(entry);
-            work_col2.push(info);
+            //work_col1.push(entry);
+            //work_col2.push(info);
             work_col3.push(contents);
 
             count2 += 1;
             count = 0;
         } else {
-            work_col1.push(entry);
-            work_col2.push(info);
+            //work_col1.push(entry);
+            //work_col2.push(info);
             work_col3.push(contents);
         }
 
         count += 1;
     }
-    col1_fin[count2] = work_col1;
-    col2_fin[count2] = work_col2;
+    //col1_fin[count2] = work_col1;
+    //col2_fin[count2] = work_col2;
     col3_fin[count2] = work_col3;
 
     //console.log(col1_fin);
@@ -276,9 +319,70 @@ function parseColumnDisplay() {
 
 
     NAV_column_display = [
-        col1_fin,
-        col2_fin,
+        NAV_column_display[0],
+        NAV_column_display[1],
         col3_fin
+    ]
+    //console.log(NAV_column_display);
+}
+
+
+function parseColumnDisplay() {
+    var count = 0;
+    var count2 = 0;
+    //var count3 = 0;
+    //var count4 = 0;
+    var work_col1 = new Array();
+    var work_col2 = new Array();
+    //var work_col3 = new Array();
+    var col1_fin = new Array();
+    var col2_fin = new Array();
+    //var col3_fin = new Array();
+    for (i in NAV_column_index[0]) {
+        var entry = NAV_column_index[0][i];
+        var info = NAV_column_index[1][i];
+        //var contents = NAV_column_index[2][i];
+        //eb(`pushing entry: ${entry}, count: ${count}, count2: ${count2}`);
+        if (count >= 20) {
+            // new arr!!
+            //console.log(work_col1)
+            col1_fin[count2] = work_col1;
+            work_col1 = new Array();
+            col2_fin[count2] = work_col2;
+            work_col2 = new Array();
+            //col3_fin[count2] = work_col3;
+            //work_col3 = new Array();
+            
+            work_col1.push(entry);
+            work_col2.push(info);
+            //work_col3.push(contents);
+
+            count2 += 1;
+            count = 0;
+        } else {
+            work_col1.push(entry);
+            work_col2.push(info);
+            //work_col3.push(contents);
+        }
+
+        count += 1;
+    }
+    col1_fin[count2] = work_col1;
+    col2_fin[count2] = work_col2;
+    //col3_fin[count2] = work_col3;
+
+    //console.log(col1_fin);
+    //console.log(col2_fin);
+    //console.log(col3_fin);
+
+    var count1 = 0;
+    var count2 = 0;
+
+
+    NAV_column_display = [
+        col1_fin,
+        col2_fin//,
+        //col3_fin
     ]
 }
 
@@ -317,6 +421,15 @@ function updatePart(part, value) {
             }
             
         }
+    } else if (part == "content") {
+        for (i in max_column_height) {
+            if (NAV_column_display[2][NAV_column3_page][i]) {
+                document.getElementById(`DOS-FLS-SCREEN-${i}`).innerHTML = NAV_column_display[2][NAV_column3_page][i];
+            } else {
+                document.getElementById(`DOS-FLS-SCREEN-${i}`).innerHTML = "                                  ";
+            }
+            
+        }
     }
 }
 
@@ -331,6 +444,7 @@ async function updatePage() {
 
 
 function changePage(columns, up) {
+    parseThirdColumn(NAV_parsed_txtfile);
     var col1 = false;
     var col2 = false;
     var col3 = false;
@@ -354,8 +468,8 @@ function changePage(columns, up) {
             return "down"
         }
     }
-    deb(`scrolling ${ifup()}, col1: ${col1}, col1: ${col1}, col2: ${col3}`);
-    deb(`limits are: ${col1_limit}, ${col2_limit}, ${col3_limit}`)
+    //deb(`scrolling ${ifup()}, col1: ${col1}, col2: ${col2}, col3: ${col3}`);
+    //deb(`limits are: ${col1_limit}, ${col2_limit}, ${col3_limit}`)
 
     if (up == true) {
         factor = -1;
@@ -367,7 +481,7 @@ function changePage(columns, up) {
 
     var returnValue = false;
 
-    deb(`col 1 page before: ${NAV_column1_page}`);
+    //deb(`col 1 page before: ${NAV_column1_page}`);
 
     if (col1 == true) {
         if (NAV_column1_page + factor < 0) {
@@ -380,9 +494,9 @@ function changePage(columns, up) {
         }
     }
 
-    deb(`col 1 page after: ${NAV_column1_page}`);
+    //deb(`col 1 page after: ${NAV_column1_page}`);
 
-    deb(`col 2 page before: ${NAV_column2_page}`);
+    //deb(`col 2 page before: ${NAV_column2_page}`);
     if (col2 == true) {
         if (NAV_column2_page + factor < 0) {
             returnValue = false;
@@ -394,9 +508,9 @@ function changePage(columns, up) {
         }
     }
 
-    deb(`col 2 page after: ${NAV_column2_page}`);
+    //deb(`col 2 page after: ${NAV_column2_page}`);
 
-    deb(`col 3 page before: ${NAV_column3_page}`);
+    //deb(`col 3 page before: ${NAV_column3_page}`);
     if (col3 == true) {
         if (NAV_column3_page + factor < 0) {
             returnValue = false;
@@ -408,7 +522,7 @@ function changePage(columns, up) {
         }
     }
 
-    deb(`col 3 page after: ${NAV_column3_page}`);
+    //deb(`col 3 page after: ${NAV_column3_page}`);
 
     updatePage();
     return returnValue
@@ -505,6 +619,8 @@ function updateSelect(new_sel) {   // updates where the selection cursor is
         var selected_new = document.getElementById(id_new);
         selected_new.style.backgroundColor = "rgba(255, 0, 0, 0.8)";
         //deb(id);
+
+        
     
     } else {
         deb("selection is outside of screen index range.", "updateSelect");
@@ -515,7 +631,7 @@ function updateSelect(new_sel) {   // updates where the selection cursor is
 function arrowPage(new_sel) {
     if (new_sel[0] == 0 || new_sel[0] == 1) {   // if it's on the first or second column
     
-        deb("AAAAA");
+        //deb("AAAAA");
 
         if (new_sel[1] == 20 ) {  // if it's at the bottom of a page
             var hehe = changePage([1, 2], false);
@@ -537,6 +653,36 @@ function arrowPage(new_sel) {
             updateSelect(new_sel);
             snd_beep();
         }
+
+        NAV_column3_page = 0;
+        NAV_parsed_txtfile = parseTxtFile();
+        parseThirdColumn(NAV_parsed_txtfile);
+        updatePart("content");
+
+    } else if (new_sel[0] == 2) {       // if its on the third column
+        if (new_sel[1] == 20 ) {  // if it's at the bottom of a page
+            var hehe = changePage([3], false);
+            if (hehe == true) {
+                updatePart("content");
+                updateSelect([new_sel[0], 0]);
+                snd_key2();
+            } else {
+                snd_beep();
+            }
+        } else if (new_sel[1] == -1) {  // if it's at the top
+            var hehe = changePage([3], true);
+            if (hehe == true) {
+                updatePart("content");
+                updateSelect([new_sel[0], 19]);
+                snd_key2();
+            } else {
+                snd_beep();
+            }
+        } else {
+            updateSelect(new_sel);
+            snd_beep();
+        }
+        
     } else {
         updateSelect(new_sel);
         snd_beep();
@@ -561,6 +707,10 @@ function pageStart() {
     updatePage();
     background_audio();
     updateSelect([0,0]);
+    NAV_column3_page = 0;
+    NAV_parsed_txtfile = parseTxtFile();
+    parseThirdColumn(NAV_parsed_txtfile);
+    updatePart("content");
 }
 
 if (welcome_user == false) {
@@ -582,14 +732,24 @@ function keyParse(e, keycobe) {
         if(keyCobe == 33) {           // page up
             if (scrollLock == false) {
                 if (welcomeLock == false) {
-                    changePage([1, 2], true);
+                    if (NAV_column_select[0] == 2) {
+                        changePage([3], true);
+                        updatePart("content");
+                    } else {
+                        changePage([1, 2], true);
+                    }
                     snd_key2();
                 }
             }
         } else if(keyCobe == 34) {    // page down
             if (scrollLock == false) {
                 if (welcomeLock == false) {
-                    changePage([1, 2], false);
+                    if (NAV_column_select[0] == 2) {
+                        changePage([3], false);
+                        updatePart("content");
+                    } else {
+                        changePage([1, 2], false);
+                    }
                     snd_key2();
                 }
             }
@@ -604,13 +764,15 @@ function keyParse(e, keycobe) {
             if (welcomeLock == true) {     // if it is on the welcome screen
                 pageStart();
                 snd_key1();
+            } else {
+                snd_key1();
             }
         } else if(keyCobe == 37) {    // left arrow
             if (navLock == false) {
                 var cur_x = NAV_column_select[0];
                 var cur_y = NAV_column_select[1];
                 var new_coords = [cur_x - 1, cur_y];
-                deb(new_coords);
+                //deb(new_coords);
                 arrowPage(new_coords);
                 snd_beep();
             }
@@ -619,7 +781,7 @@ function keyParse(e, keycobe) {
                 var cur_x = NAV_column_select[0];
                 var cur_y = NAV_column_select[1];
                 var new_coords = [cur_x, cur_y - 1];
-                deb(new_coords);
+                //deb(new_coords);
                 arrowPage(new_coords);
             }
         } else if(keyCobe == 39) {    // right arrow
@@ -627,7 +789,7 @@ function keyParse(e, keycobe) {
                 var cur_x = NAV_column_select[0];
                 var cur_y = NAV_column_select[1];
                 var new_coords = [cur_x + 1, cur_y];
-                deb(new_coords);
+                //deb(new_coords);
                 arrowPage(new_coords);
                 snd_beep();
             }
@@ -636,7 +798,7 @@ function keyParse(e, keycobe) {
                 var cur_x = NAV_column_select[0];
                 var cur_y = NAV_column_select[1];
                 var new_coords = [cur_x, cur_y + 1];
-                deb(new_coords);
+                //deb(new_coords);
                 arrowPage(new_coords);
             }
         }
