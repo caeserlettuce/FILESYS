@@ -111,13 +111,13 @@ function parsePath(pathtm) {
             paths.push(cur);
 
             if (cur == "contents") {
-                deb(`found 'contents' in path!`);
+                //deb(`found 'contents' in path!`);
                 var wook = copyArr(paths);
-                console.log("before pop", wook);
+                //console.log("before pop", wook);
                 wook.pop();
-                console.log("after pop", wook);
+                //console.log("after pop", wook);
                 var pat = eval(`system${parseToEval(wook)}`);
-                console.log("after eval'd", pat);
+                //console.log("after eval'd", pat);
                 var name = pat["name"];
                 finalPath = `${finalPath}${name}↖`;
             }
@@ -440,7 +440,7 @@ function transition(part) {
             }
         }
         //console.log(finalAnim);
-        animateTime(finalAnim, 75);
+        animateTime(finalAnim, 70);
     }
 }
 
@@ -459,6 +459,7 @@ function pageStart() {
     upDATE();
     setInterval(upDATE, 15000);
     updatePage();
+    background_audio();
 }
 
 if (welcome_user == false) {
@@ -474,23 +475,27 @@ var elem = document.getElementById("jesus");
                 if (scrollLock == false) {
                     if (welcomeLock = true) {
                         changePage([1, 2], true);
+                        snd_beep();
                     }
                 }
             } else if(e.keyCode == 34) {    // page down
                 if (scrollLock == false) {
                     if (welcomeLock = true) {
                         changePage([1, 2], false);
+                        snd_beep();
                     }
                 }
             } else if(e.keyCode == 27) {    // escape key
                 if (navLock == false) {
                     if (welcomeLock = true) {
                         navBack();
+                        snd_key2();
                     }
                 }
             } else if(e.keyCode == 13) {    // enter key
                 if (welcomeLock == false) {     // if it is on the welcome screen
                     pageStart();
+                    snd_key1();
                 }
             }
             
