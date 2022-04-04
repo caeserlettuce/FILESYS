@@ -27,6 +27,7 @@ var welcome_user = true;
 var welcomeLock = !welcome_user;
 
 var SET_animations = true;
+var SET_postfx = true;
 
 
 var max_column1_len = 12;
@@ -614,17 +615,27 @@ function updateSelect(new_sel) {   // updates where the selection cursor is
         var prefix_old = prefixes[prev_x_index]
         var id_old = `${prefix_old}${prev_y_index}`;
         var selected_old = document.getElementById(id_old);
-        selected_old.style.backgroundColor = "";
+        if (SET_postfx == true) {
+            selected_old.classList.remove('highlighted-bloom');
+        } else {
+            selected_old.classList.remove('highlighted');
+        }
         //deb(id);
     
         //deb("index is within display limits!!!"); // new selection
         var prefix_new = prefixes[x_index]
         var id_new = `${prefix_new}${y_index}`;
         var selected_new = document.getElementById(id_new);
-        selected_new.style.backgroundColor = "rgba(255, 0, 0, 0.8)";
+        
+        if (SET_postfx == true) {
+            selected_new.classList.add('highlighted-bloom');
+        } else {
+            selected_new.classList.add('highlighted');
+        }
+        
         //deb(id);
 
-        
+        // rgba(255, 0, 0, 0.8)
     
     } else {
         deb("selection is outside of screen index range.", "updateSelect");
@@ -792,10 +803,13 @@ function openFile() {
         navBack();
         fileUpdateRequired();
         aud("kb2");
+    } else if (check.type == "executable") {
+        aud("kb2");
+        eval(`${check["content"]["exec"]}`);
     } else {
         aud("kb1");
     }
-    
+
 }
 
 
@@ -806,6 +820,12 @@ function openFile() {
 
 DOS_welcome_text.style.display = "";
 DOS_text.style.display = "none";
+
+if (SET_postfx == true) {
+    document.getElementById("jesus").classList.add('bloom');
+} else {
+    document.getElementById("jesus").classList.remove('bloom');
+}
 
 function pageStart() {
     welcome_user = false;
@@ -823,6 +843,7 @@ function pageStart() {
     NAV_parsed_txtfile = parseTxtFile();
     parseThirdColumn(NAV_parsed_txtfile);
     updatePart("content");
+    updatePart("version", version);
 }
 
 if (welcome_user == false) {

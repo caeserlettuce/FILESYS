@@ -1,0 +1,5 @@
+
+
+function AAA() {
+    alert("AAA!");
+}
