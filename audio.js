@@ -1,72 +1,67 @@
-// for audio handling
+// audio framework
 
-//var aud_background = document.getElementById("aud_background_1");
-var aud_keyboard_1 = document.getElementById("aud_keyboard_1");
-var aud_keyboard_2 = document.getElementById("aud_keyboard_2");
-var aud_beep = document.getElementById("aud_beep");
-var aud_buzz = document.getElementById("aud_buzz");
-var aud_anne = document.getElementById("aud_anne");
+var SET_ambient_vol = 1;
+var SET_fx_vol = 1;
+var SET_music_vol = 0.1;
 
-function doublePlay(curplayer, a, b){
-    var player = null;
-    if(curplayer == "a") {
-        player = b;
-        curplayer = "b";
+
+
+var sounds = {
+    "kb1": {
+        "url": "assets/sounds/aud_keyboard_1.mp3",
+        "vol": SET_fx_vol
+    },
+    "kb2": {
+        "url": "assets/sounds/aud_keyboard_2.mp3",
+        "vol": SET_fx_vol
+    },
+    "beep": {
+        "url": "assets/sounds/aud_beep.mp3",
+        "vol": SET_fx_vol
+    },
+    "buzz": {
+        "url": "assets/sounds/aud_buzz.mp3",
+        "vol": SET_fx_vol
+    },
+    "anne": {
+        "url": "assets/sounds/aud_anne.mp3",
+        "vol": SET_music_vol
+    },
+    "background": {
+        "url": "assets/sounds/aud_background.mp3",
+        "vol": SET_ambient_vol
+    },
+}
+
+function aud(audio, playover) {
+    if (sounds[audio]) {                            // audio exists!!
+        if (playover == true) {                     // audio should play over the last one
+            var i_hate_you = new Audio(`${sounds[audio]["url"]}`);
+            i_hate_you.volume = sounds[audio]["vol"];
+            i_hate_you.play();
+        } else {                                    // audio will pause over its last playing audio
+            var use_var = `AUD_${audio}`.replace(" ", "_");
+            if (eval(`if (typeof ${use_var} !== 'undefined') {true} else {false}`) == true) {
+                eval(`${use_var}.currentTime = 0`);
+                eval(`${use_var}.play()`);
+                eval(`${use_var}.volume = ${sounds[audio]["vol"]}`);
+            } else {
+                eval(`${use_var} = new Audio("${sounds[audio]["url"]}")`);
+                eval(`${use_var}.volume = ${sounds[audio]["vol"]}`);
+                eval(`${use_var}.play()`);
+            }
+        }        
+    } else {
+        console.log(`[AUDIO FRAMEWORK (tm)]: the audio "${audio}" doesn't exist.`);
     }
-    else {
-        player = a;
-        curplayer = "a";
-    }
-    player.play();
 }
 
 
-function snd_key1() {
-    aud_keyboard_1.currentTime = 0;
-    aud_keyboard_1.play();
-}
-    
-function snd_key2() {
-    aud_keyboard_2.currentTime = 0;
-    aud_keyboard_2.play();
-}
-function snd_beep() {
-    aud_beep.currentTime = 0;
-    aud_beep.play();
-}
-function snd_buzz() {
-    aud_buzz.currentTime = 0;
-    aud_buzz.play();
-}
-
-//aud_beep.play();
-
-var beep_current_player = "a";
-var beep_a = document.getElementById("aud_beep_a");
-var beep_b = document.getElementById("aud_beep_b");
-
-
-var background_current_player = "a";
-var background_a = document.getElementById("aud_background_a");
-var background_b = document.getElementById("aud_background_b");
 
 function background_audio(){
-    var player = null;
-
-    if(background_current_player == "a") {
-        player = background_b;
-        background_current_player = "b";
-    }
-    else{
-        player = background_a;
-        background_current_player = "a";
-    }
-
-    player.play();
-
+    aud("background");
     setTimeout(background_audio, 11485); // 11.485 seconds long, this value shouold be in milliseconds
 }
 
-//document.getElementById("background_a").autoplay;
 
 

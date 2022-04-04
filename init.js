@@ -637,21 +637,21 @@ function arrowPage(new_sel) {
             var hehe = changePage([1, 2], false);
             if (hehe == true) {
                 updateSelect([new_sel[0], 0]);
-                snd_key2();
+                aud("kb2");
             } else {
-                snd_beep();
+                aud("beep");
             }
         } else if (new_sel[1] == -1) {  // if it's at the top
             var hehe = changePage([1, 2], true);
             if (hehe == true) {
                 updateSelect([new_sel[0], 19]);
-                snd_key2();
+                aud("kb2");
             } else {
-                snd_beep();
+                aud("beep");
             }
         } else {
             updateSelect(new_sel);
-            snd_beep();
+            aud("beep");
         }
 
         NAV_column3_page = 0;
@@ -665,29 +665,58 @@ function arrowPage(new_sel) {
             if (hehe == true) {
                 updatePart("content");
                 updateSelect([new_sel[0], 0]);
-                snd_key2();
+                aud("kb2");
             } else {
-                snd_beep();
+                aud("beep");
             }
         } else if (new_sel[1] == -1) {  // if it's at the top
             var hehe = changePage([3], true);
             if (hehe == true) {
                 updatePart("content");
                 updateSelect([new_sel[0], 19]);
-                snd_key2();
+                aud("kb2");
             } else {
-                snd_beep();
+                aud("beep");
             }
         } else {
             updateSelect(new_sel);
-            snd_beep();
+            aud("beep");
         }
         
     } else {
         updateSelect(new_sel);
-        snd_beep();
+        aud("beep");
     }
 }
+
+
+// =============================================================================================================================================================================
+
+// ==================+THIS IS WHERE YOU ADD SUPPORT FOR NEW FILE TYPES JESSE!!!!!!! FOR IT DETECTION FOR IT!!!! AAA !!  ========================================================
+
+// =============================================================================================================================================================================
+
+
+function checkCurrentType() {
+    var type = document.getElementById(`DOS-FLS-FLIST-TYPE-${NAV_prev_select[1]}`).innerHTML;
+    var name = document.getElementById(`DOS-FLS-FLIST-NAME-${NAV_prev_select[1]}`).innerHTML;
+    var extension = name.split(".")[name.split(".").length - 1].replaceAll(" ", "");
+    var out_type = null;
+    if (type == ">FOLDER<") {           // its a folder
+        out_type = "folder";
+    } else if (type == "<UP-FOL>") {    // an up-folder
+        out_type = "up-folder";
+    } else if (extension == "exe") {    // executable
+        out_type = "executable";
+    } else if (extension == "ini") {    // configuration file
+        out_type = "configuration";
+    }
+
+    return [out_type, type, name, extension]
+}
+
+    
+
 
 
 
@@ -738,7 +767,7 @@ function keyParse(e, keycobe) {
                     } else {
                         changePage([1, 2], true);
                     }
-                    snd_key2();
+                    aud("kb2");
                 }
             }
         } else if(keyCobe == 34) {    // page down
@@ -750,22 +779,22 @@ function keyParse(e, keycobe) {
                     } else {
                         changePage([1, 2], false);
                     }
-                    snd_key2();
+                    aud("kb2");
                 }
             }
         } else if(keyCobe == 27) {    // escape key
             if (navLock == false) {
                 if (welcomeLock = true) {
                     navBack();
-                    snd_key2();
+                    aud("kb2");
                 }
             }
         } else if(keyCobe == 13) {    // enter key
             if (welcomeLock == true) {     // if it is on the welcome screen
                 pageStart();
-                snd_key1();
+                aud("kb1");
             } else {
-                snd_key1();
+                aud("kb1");
             }
         } else if(keyCobe == 37) {    // left arrow
             if (navLock == false) {
@@ -774,7 +803,7 @@ function keyParse(e, keycobe) {
                 var new_coords = [cur_x - 1, cur_y];
                 //deb(new_coords);
                 arrowPage(new_coords);
-                snd_beep();
+                aud("beep");
             }
         } else if(keyCobe == 38) {    // up arrow
             if (navLock == false) {
@@ -791,7 +820,7 @@ function keyParse(e, keycobe) {
                 var new_coords = [cur_x + 1, cur_y];
                 //deb(new_coords);
                 arrowPage(new_coords);
-                snd_beep();
+                aud("beep");
             }
         } else if(keyCobe == 40) {    // down arrow
             if (navLock == false) {

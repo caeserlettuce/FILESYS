@@ -220,24 +220,24 @@ var welcome_messages_rare = [
 // system is structured like this:
 
 var template_system = {             // DONT EDIT
-    "C": {                                                                      // the drive
-        "files": [                                                                  // list of all the files in the current folder, if there are none, just leave it empty. the system knows what type of file it is by it's extension (e.g. .txt .exe) if no extension is set, the system will think it's a folder and will freak out or smth idk
-            {"name": "file.txt", "contents": "hello, gordon!"},                         // setup a simple text file. if you want a new line, use "\n"
-            {"name": "start.exe", "contents": "startExecutable();", "id": "4975"},      // setup a simple executable file. the value for "contents" will be run using eval() when the file is executed.
-            {"name": "setup.ini", "contents": [                                         // setup of a simple config file. contents should contain a list of all the settings in the file
-                {"name": "debug", "values": [                                               // define a setting. values should be a list of all the values you can select for the setting.
-                    {"name": "../", "contents": "GO UP"},                                   // for going up
-                    {"name": "true", "do": "debugTrue();"},                                 // simple setting value. "do" should be the function that will be run when you apply the settings.
-                    {"name": "false", "do": "debugFalse();"}                                // ^
+    "C": {                                                                                                  // the drive
+        "files": [                                                                                                  // list of all the files in the current folder, if there are none, just leave it empty. the system knows what type of file it is by it's extension (e.g. .txt .exe) if no extension is set, the system will think it's a folder and will freak out or smth idk
+            {"name": "file.txt", "contents": "hello, gordon!"},                                                         // setup a simple text file. if you want a new line, use "\n"
+            {"name": "start.exe", "contents": "app:superhot.exe     |--FILE->9749", "exec": "startExecutable();"},      // setup a simple executable file. the value for "exec" will be run using eval() when the file is executed. "contents" is the file informationé
+            {"name": "setup.ini", "contents": [                                                                         // setup of a simple config file. contents should contain a list of all the settings in the file
+                {"name": "debug", "values": [                                                                           // define a setting. values should be a list of all the values you can select for the setting.
+                    {"name": "../", "contents": "directory: GO UP"},                                                    // for going up
+                    {"name": "true", "do": "debugTrue();"},                                                             // simple setting value. "do" should be the function that will be run when you apply the settings.
+                    {"name": "false", "do": "debugFalse();"}                                                            // ^
                     ]
                 }, 
                 {"name": "postfx", "values": [
-                    {"name": "../", "contents": "GO UP"},
+                    {"name": "../", "contents": "directory: GO UP"},
                     {"name": "true", "do": "pfxTrue();"},
                     {"name": "false", "do": "pfxFalse();"}
                     ]
                 }
-                ], "id": "4976"                                                             // id is the file id it'll show on the selection info (ont actually important internally)
+                ]                                                                // id is the file id it'll show on the selection info (ont actually important internally)
             }
         ],
         "folders": [                                                    // list of all the folders in the current directory. if there are none, just leave it empty.
@@ -341,7 +341,7 @@ hello, you!`},
         "folders": [
             {"name": "folder1", "contents": {
                 "files": [
-                    {"name": "../", "contents": "GO UP"},
+                    {"name": "../", "contents": "directory: GO UP"},
                     {"name": "file1.txt", "contents": "hello, world!"},
                     {"name": "file2.txt", "contents": "foo bar"},
                     {"name": "file3.txt", "contents": "foo bar"},
@@ -409,28 +409,28 @@ hello, you!`},
             }},
             {"name": "folder2", "contents": {
                 "files": [
-                    {"name": "../", "contents": "GO UP"},
+                    {"name": "../", "contents": "directory: GO UP"},
                     {"name": "file5.txt", "contents": "never stop hello, world!"},
                     {"name": "file6.txt", "contents": "another foo bar is approaching!"}
                 ],
                 "folders": [
                     {"name": "dont look", "contents": {
                         "files": [
-                            {"name": "../", "contents": "GO UP"},
+                            {"name": "../", "contents": "directory: GO UP"},
                             {"name": "file5.txt", "contents": "never stop hello, world!"},
                             {"name": "file6.txt", "contents": "another foo bar is approaching!"}
                         ],
                         "folders": [
                             {"name": "seriously this is a secret", "contents": {
                                 "files": [
-                                    {"name": "../", "contents": "GO UP"},
+                                    {"name": "../", "contents": "directory: GO UP"},
                                     {"name": "file5.txt", "contents": "never stop hello, world!"},
                                     {"name": "file6.txt", "contents": "another foo bar is approaching!"}
                                 ],
                                 "folders": [
                                     {"name": "bruh", "contents": {
                                         "files": [
-                                            {"name": "../", "contents": "GO UP"},
+                                            {"name": "../", "contents": "directory: GO UP"},
                                             {"name": "file5.txt", "contents": "never stop hello, world!"},
                                             {"name": "file6.txt", "contents": "another foo bar is approaching!"}
                                         ],
