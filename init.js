@@ -55,7 +55,7 @@ var NAV_column_select = [0, 0]; // first value is from 0-2, second value is from
 var NAV_column1_page = 0;
 var NAV_column2_page = 0;
 var NAV_column3_page = 0;
-
+var SEL_file_info = new Object();
 
 deb("variables loaded.", "init");
 
@@ -251,12 +251,12 @@ function parseTxtFile() {
 
     for (i in content) {
         var enty = content[i];
-        var final = enty.match(/.{1,34}/g)
+        var final = enty.match(/.{1,32}/g)
 
         for (i in final) {
             var len = final[i].length;
-            var diff = 34 - len;
-            finalContent.push(`${final[i]}${" ".repeat(diff)}`)
+            var diff = 32 - len;
+            finalContent.push(` ${final[i]}${" ".repeat(diff)} `)
         }
 
     }
@@ -264,6 +264,9 @@ function parseTxtFile() {
     return finalContent
 
 }
+
+
+
 
 function parseThirdColumn(txtparse) {
     var contents_index = txtparse
@@ -394,7 +397,7 @@ function updatePart(part, value) {
     // part is the part of the screen
     // value is the new value                         ↖
 
-    // list of parts: all, time, curdir, version, files, 
+    // list of parts: all, time, curdir, version, files, content
     if (part == "all") {
 
     } else if (part == "time") {
@@ -657,6 +660,7 @@ function arrowPage(new_sel) {
         NAV_column3_page = 0;
         NAV_parsed_txtfile = parseTxtFile();
         parseThirdColumn(NAV_parsed_txtfile);
+        fileInfo(checkCurrentType());
         updatePart("content");
 
     } else if (new_sel[0] == 2) {       // if its on the third column
@@ -698,26 +702,73 @@ function arrowPage(new_sel) {
 
 
 function checkCurrentType() {
-    var type = document.getElementById(`DOS-FLS-FLIST-TYPE-${NAV_prev_select[1]}`).innerHTML;
-    var name = document.getElementById(`DOS-FLS-FLIST-NAME-${NAV_prev_select[1]}`).innerHTML;
+    var type = document.getElementById(`DOS-FLS-FLIST-TYPE-${NAV_column_select[1]}`).innerHTML.replaceAll("&gt;", ">").replaceAll("&lt;", "<");
+    var name = document.getElementById(`DOS-FLS-FLIST-NAME-${NAV_column_select[1]}`).innerHTML;
     var extension = name.split(".")[name.split(".").length - 1].replaceAll(" ", "");
     var out_type = null;
     if (type == ">FOLDER<") {           // its a folder
         out_type = "folder";
-    } else if (type == "<UP-FOL>") {    // an up-folder
+    } else if (type == ">UP-FOL<") {    // an up-folder
         out_type = "up-folder";
     } else if (extension == "exe") {    // executable
         out_type = "executable";
     } else if (extension == "ini") {    // configuration file
         out_type = "configuration";
+    } else if (type == "--FILE->") {    // (INSERT STUFF BEFORE THIS LINE) general file
+        out_type = "file";
+    } else {
+        out_type = "unknown";
     }
 
-    return [out_type, type, name, extension]
+    var content = new Array();
+    // getting json info
+    if (type == "--FILE->") {   // if it's a file
+        var x_list = NAV_column1_page * 20 + NAV_column_select[1];
+        var x_list_folders = NAV_column_index[0].length - (parseToEval([...NAV_current_path, "folders"]).length + 1 );
+        //deb(x_list_folders);
+        var fileContentsPAth = parseToEval([...NAV_current_path, "files", x_list]);
+        var fileContentsPoop = parseToEval([...NAV_current_path, "files"]);
+        var contentExist = eval(`system${fileContentsPoop}.hasOwnProperty(${x_list})`);
+        //deb(`x-list: ${x_list}, path: ${fileContentsPAth}`);
+        if (contentExist == true) {
+            content = eval(`system${fileContentsPAth}`);
+            var x_list_files = NAV_column1_page * 20 + NAV_column_select[1];
+        } else {
+            content = [];
+        }
+    } else if (type == ">FOLDER<") {   // if it's a folder
+        var x_list = NAV_column1_page * 20 + NAV_column_select[1] - ( eval(`system${parseToEval([...NAV_current_path, "files"])}`).length + 1 );
+        //deb(x_list);
+        var fileContentsPoop = parseToEval([...NAV_current_path, "folders"]);
+        var fileContentsPAth = parseToEval([...NAV_current_path, "folders", x_list]);
+        var contentExist = eval(`system${fileContentsPoop}.hasOwnProperty(${x_list})`);
+        //deb(`x-list: ${x_list}, path: ${fileContentsPAth}`);
+        if (contentExist == true) {
+            content = eval(`system${fileContentsPAth}`);
+        } else {
+            content = [];
+        }
+
+        
+    }
+    SEL_file_info = {"type": out_type, "typename": type, "name": name, "extension": extension, "content": content};
+    return SEL_file_info
 }
 
     
 
+function fileInfo(info) {
 
+    if (info["type"] == "folder") {
+        var widy = 23;
+        var chunk1 = ` ${checkLen(`directory: ${info["name"]}`, widy, false)}│${info["typename"]} `;
+
+
+        parseThirdColumn([chunk1]);
+        updatePart("content");
+    }
+
+}
 
 
 
@@ -766,6 +817,11 @@ function keyParse(e, keycobe) {
                         updatePart("content");
                     } else {
                         changePage([1, 2], true);
+                        NAV_column3_page = 0;
+                        NAV_parsed_txtfile = parseTxtFile();
+                        parseThirdColumn(NAV_parsed_txtfile);
+                        fileInfo(checkCurrentType());
+                        updatePart("content");
                     }
                     aud("kb2");
                 }
@@ -778,6 +834,11 @@ function keyParse(e, keycobe) {
                         updatePart("content");
                     } else {
                         changePage([1, 2], false);
+                        NAV_column3_page = 0;
+                        NAV_parsed_txtfile = parseTxtFile();
+                        parseThirdColumn(NAV_parsed_txtfile);
+                        fileInfo(checkCurrentType());
+                        updatePart("content");
                     }
                     aud("kb2");
                 }
@@ -793,6 +854,9 @@ function keyParse(e, keycobe) {
             if (welcomeLock == true) {     // if it is on the welcome screen
                 pageStart();
                 aud("kb1");
+            } else if (navLock == false) {
+                
+                
             } else {
                 aud("kb1");
             }
