@@ -1,9 +1,40 @@
 .bloom {
-    text-shadow: -13px 0px 17px rgba(34, 172, 217, 0.3), 10px 0px 10px rgba(34, 172, 217, 0.5), -10px 0px 10px rgba(34, 172, 217, 0.3), 0px 0px 5px white;
+    /*text-shadow: -13px 0px 17px rgba(34, 172, 217, 0.3), 10px 0px 10px rgba(34, 172, 217, 0.5), -10px 0px 10px rgba(34, 172, 217, 0.3), 0px 0px 5px white;*/
+    animation-duration: 0.02s;
+    animation-name: bloom-stutter;
+    animation-iteration-count: infinite;
 }
 .highlighted-bloom {
     color: white;
     background-color: rgba(255, 0, 0, 0.8);
-    box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.8);
+    /*box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.8);
     text-shadow: 0px 0px 5px rgba(255,255,255,1), 0px 0px 20px rgba(255, 0, 0, 0.9), 10px 0px 20px rgba(255, 0, 0, 0.9), 20px 0px 20px rgba(255, 0, 0, 0.9), 30px 0px 20px rgba(255, 0, 0, 0.9), -10px 0px 20px rgba(255, 0, 0, 0.9), -20px 0px 20px rgba(255, 0, 0, 0.9), -30px 0px 20px rgba(255, 0, 0, 0.9);
+    */
+    animation-duration: 0.02s;
+    animation-name: highlighted-bloom-stutter;
+    animation-iteration-count: infinite;
+}
+
+
+@keyframes bloom-stutter {
+    from {
+        text-shadow: -13px 0px 17px rgba(34, 172, 217, 0.3), 10px 0px 10px rgba(34, 172, 217, 0.5), -10px 0px 10px rgba(34, 172, 217, 0.3), 0px 0px 5px white;
+    }
+  
+    to {
+        text-shadow: -14px 0px 17px rgba(34, 172, 217, 0.3), 9px 0px 10px rgba(34, 172, 217, 0.5), -11px 0px 10px rgba(34, 172, 217, 0.3), 0px 0px 5px white;
+    }
+}
+
+
+@keyframes highlighted-bloom-stutter {
+    from {
+        box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.8);
+        text-shadow: 0px 0px 5px rgba(255,255,255,1), 0px 0px 20px rgba(255, 0, 0, 0.9), 10px 0px 20px rgba(255, 0, 0, 0.9), 20px 0px 20px rgba(255, 0, 0, 0.9), 30px 0px 20px rgba(255, 0, 0, 0.9), -10px 0px 20px rgba(255, 0, 0, 0.9), -20px 0px 20px rgba(255, 0, 0, 0.9), -30px 0px 20px rgba(255, 0, 0, 0.9);
+    }
+  
+    to {
+        box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.8);
+        text-shadow: 0px 0px 5px rgba(255,255,255,1), 1px 0px 20px rgba(255, 0, 0, 0.9), 11px 0px 20px rgba(255, 0, 0, 0.9), 21px 0px 20px rgba(255, 0, 0, 0.9), 31px 0px 20px rgba(255, 0, 0, 0.9), -9px 0px 20px rgba(255, 0, 0, 0.9), -19px 0px 20px rgba(255, 0, 0, 0.9), -29px 0px 20px rgba(255, 0, 0, 0.9);
+    }
 }
