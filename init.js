@@ -143,6 +143,7 @@ function navFolder(folder_id) {
     NAV_current_path.push("contents");
     updatePage();
     updatePart("curdir", parsePath());
+    fileUpdateRequired();
 }
 
 function navBack() {
@@ -722,9 +723,11 @@ function checkCurrentType() {
 
     var content = new Array();
     // getting json info
+
+    var x_list = 0;
     if (type == "--FILE->") {   // if it's a file
-        var x_list = NAV_column1_page * 20 + NAV_column_select[1];
-        var x_list_folders = NAV_column_index[0].length - (parseToEval([...NAV_current_path, "folders"]).length + 1 );
+        x_list = NAV_column1_page * 20 + NAV_column_select[1];
+        
         //deb(x_list_folders);
         var fileContentsPAth = parseToEval([...NAV_current_path, "files", x_list]);
         var fileContentsPoop = parseToEval([...NAV_current_path, "files"]);
@@ -732,12 +735,11 @@ function checkCurrentType() {
         //deb(`x-list: ${x_list}, path: ${fileContentsPAth}`);
         if (contentExist == true) {
             content = eval(`system${fileContentsPAth}`);
-            var x_list_files = NAV_column1_page * 20 + NAV_column_select[1];
         } else {
             content = [];
         }
     } else if (type == ">FOLDER<") {   // if it's a folder
-        var x_list = NAV_column1_page * 20 + NAV_column_select[1] - ( eval(`system${parseToEval([...NAV_current_path, "files"])}`).length + 1 );
+        x_list = NAV_column1_page * 20 + NAV_column_select[1] - ( eval(`system${parseToEval([...NAV_current_path, "files"])}`).length + 1 );
         //deb(x_list);
         var fileContentsPoop = parseToEval([...NAV_current_path, "folders"]);
         var fileContentsPAth = parseToEval([...NAV_current_path, "folders", x_list]);
@@ -751,7 +753,7 @@ function checkCurrentType() {
 
         
     }
-    SEL_file_info = {"type": out_type, "typename": type, "name": name, "extension": extension, "content": content};
+    SEL_file_info = {"type": out_type, "typename": type, "name": name, "extension": extension, "content": content, "xlist": x_list};
     return SEL_file_info
 }
 
@@ -768,6 +770,14 @@ function fileInfo(info) {
         updatePart("content");
     }
 
+}
+
+function fileUpdateRequired() { // this function name is making fun of windows
+    NAV_column3_page = 0;
+    NAV_parsed_txtfile = parseTxtFile();
+    parseThirdColumn(NAV_parsed_txtfile);
+    fileInfo(checkCurrentType());
+    updatePart("content");
 }
 
 
@@ -817,11 +827,7 @@ function keyParse(e, keycobe) {
                         updatePart("content");
                     } else {
                         changePage([1, 2], true);
-                        NAV_column3_page = 0;
-                        NAV_parsed_txtfile = parseTxtFile();
-                        parseThirdColumn(NAV_parsed_txtfile);
-                        fileInfo(checkCurrentType());
-                        updatePart("content");
+                        fileUpdateRequired();
                     }
                     aud("kb2");
                 }
@@ -834,19 +840,16 @@ function keyParse(e, keycobe) {
                         updatePart("content");
                     } else {
                         changePage([1, 2], false);
-                        NAV_column3_page = 0;
-                        NAV_parsed_txtfile = parseTxtFile();
-                        parseThirdColumn(NAV_parsed_txtfile);
-                        fileInfo(checkCurrentType());
-                        updatePart("content");
+                        fileUpdateRequired();
                     }
                     aud("kb2");
                 }
             }
         } else if(keyCobe == 27) {    // escape key
             if (navLock == false) {
-                if (welcomeLock = true) {
+                if (welcomeLock == false) {
                     navBack();
+                    fileUpdateRequired();
                     aud("kb2");
                 }
             }
@@ -855,7 +858,19 @@ function keyParse(e, keycobe) {
                 pageStart();
                 aud("kb1");
             } else if (navLock == false) {
-                
+                var check = checkCurrentType();
+                if (check.type == "folder") {   // selecting a folder
+                    navFolder(check.xlist);
+                    fileUpdateRequired();
+                    aud("kb1");
+                } else if (check.type == "up-folder") {
+                    navBack();
+                    fileUpdateRequired();
+                    aud("kb2");
+                } else {
+                    aud("kb1");
+                }
+
                 
             } else {
                 aud("kb1");

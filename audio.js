@@ -6,7 +6,7 @@ var SET_music_vol = 0.1;
 
 
 
-var sounds = {
+var src_sounds = {
     "kb1": {
         "url": "assets/sounds/aud_keyboard_1.mp3",
         "vol": SET_fx_vol
@@ -31,6 +31,10 @@ var sounds = {
         "url": "assets/sounds/aud_background.mp3",
         "vol": SET_ambient_vol
     },
+}
+
+var sounds = {          // make a duplicate of the source soundpack so that the sounds can be edited (for easter eggs) without screwing up the original soundpack
+    ...src_sounds
 }
 
 function aud(audio, playover) {
