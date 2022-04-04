@@ -782,6 +782,28 @@ function fileUpdateRequired() { // this function name is making fun of windows
 
 
 
+function openFile() {
+    var check = checkCurrentType();
+    if (check.type == "folder") {   // selecting a folder
+        navFolder(check.xlist);
+        fileUpdateRequired();
+        aud("kb1");
+    } else if (check.type == "up-folder") {
+        navBack();
+        fileUpdateRequired();
+        aud("kb2");
+    } else {
+        aud("kb1");
+    }
+    
+}
+
+
+
+
+
+
+
 DOS_welcome_text.style.display = "";
 DOS_text.style.display = "none";
 
@@ -858,18 +880,7 @@ function keyParse(e, keycobe) {
                 pageStart();
                 aud("kb1");
             } else if (navLock == false) {
-                var check = checkCurrentType();
-                if (check.type == "folder") {   // selecting a folder
-                    navFolder(check.xlist);
-                    fileUpdateRequired();
-                    aud("kb1");
-                } else if (check.type == "up-folder") {
-                    navBack();
-                    fileUpdateRequired();
-                    aud("kb2");
-                } else {
-                    aud("kb1");
-                }
+                openFile();
 
                 
             } else {
